@@ -6,6 +6,8 @@ class UsuarioController {
   public async new(req: Request, res: Response) {
     const { nome, email, senha } = req.body;
 
+    console.log(req.body)
+
     if (!nome || !email || !senha) {
       return res.status(400).json({ error: "Campos incompletos ou não informados." });
     }
