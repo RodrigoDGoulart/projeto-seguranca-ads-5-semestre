@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
-import './index.css';
 import { useNavigate } from "react-router-dom";
+
+import './index.css';
 
 export default function NovoUsuario() {
     const nav = useNavigate();
@@ -17,7 +18,7 @@ export default function NovoUsuario() {
 
     return (
         <div>
-            <Button variant="text" className="novousuario-voltar" onClick={() => nav('/')}>Voltar</Button>
+            <Button variant="text" className="novousuario-voltar" onClick={() => nav(-1)}>Voltar</Button>
             <h1 className="novousuario-title">
                 Novo usuário
             </h1>

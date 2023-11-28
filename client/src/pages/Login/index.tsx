@@ -1,15 +1,19 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import Usuario from "../../services/Usuario";
+import { useNavigate } from "react-router-dom";
 
 import './index.css';
 
 export default function Login() {
+  const nav = useNavigate();
+
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   const submit = async () => {
     await Usuario.login({email, senha});
+    nav('/');
   }
 
   return (
@@ -39,6 +43,9 @@ export default function Login() {
 
         <Button variant="contained" type="submit">
           Entrar
+        </Button>
+        <Button variant="outlined" type="button" onClick={() => nav('/novo-usuario')}>
+          Cadastrar
         </Button>
       </form>
     </div>
