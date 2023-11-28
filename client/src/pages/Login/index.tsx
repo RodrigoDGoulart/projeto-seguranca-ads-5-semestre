@@ -44,7 +44,7 @@ export default function Login() {
         <Button variant="contained" type="submit">
           Entrar
         </Button>
-        <Button variant="outlined" type="button" onClick={() => nav('/novo-usuario')}>
+        <Button variant="outlined" type="button" onClick={() => nav('/cadastro')}>
           Cadastrar
         </Button>
       </form>

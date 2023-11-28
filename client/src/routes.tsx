@@ -8,7 +8,7 @@ export default function AppRoutes () {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Usuarios />} />
-                <Route path='/novo-usuario' element={<NovoUsuario />} />
+                <Route path='/cadastro' element={<NovoUsuario />} />
                 <Route path='/login' element={<Login />} />
             </Routes>
         </BrowserRouter>
