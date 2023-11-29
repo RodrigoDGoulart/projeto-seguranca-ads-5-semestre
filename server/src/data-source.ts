@@ -9,8 +9,8 @@ const AppDataSource = new DataSource({
     type: "postgres", // se for SQLite, então use sqlite
     url: process.env.DB_URL, // não use esta propriedade se for sqlite
     // port: 5432, // não use esta propriedade se for sqlite
-    //username: 'postgres', // não use esta propriedade se for sqlite
-    //password:'asterisk', // não use esta propriedade se for sqlite
+    //username: 'xxx', // não use esta propriedade se for sqlite
+    //password:'xxx', // não use esta propriedade se for sqlite
     // true indica que o schema do BD será criado a cada vez que a aplicação inicializar
     // deixe false ao usar migrations
     synchronize: false, 
