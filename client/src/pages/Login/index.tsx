@@ -2,18 +2,22 @@ import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import Usuario from "../../services/Usuario";
 import { useNavigate } from "react-router-dom";
+import { useContexto } from "../../hooks/useContexto";
 
 import './index.css';
 
 export default function Login() {
   const nav = useNavigate();
+  const {setUsuario} = useContexto();
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   const submit = async () => {
-    await Usuario.login({email, senha});
-    nav('/');
+    const usuario = await Usuario.login({email, senha});
+    setUsuario(usuario);
+    sessionStorage.setItem('usuario', JSON.stringify(usuario));
+    nav(`/perfil/${usuario.id}`);
   }
 
   return (

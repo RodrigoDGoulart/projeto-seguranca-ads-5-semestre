@@ -1,11 +1,13 @@
 import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-import './index.css';
 import Usuario from "../../services/Usuario";
 
+import './index.css';
+import { useContexto } from "../../hooks/useContexto";
+
 export default function UsuarioForm() {
+  const { usuario } = useContexto()
   const { id } = useParams();
   const nav = useNavigate();
 
@@ -15,6 +17,7 @@ export default function UsuarioForm() {
   const [descricao, setDescricao] = useState('');
 
   const [error, setError] = useState(false);
+  const [unauth, setUnauth] = useState(false);
 
   const submit = async () => {
     if (id) {
@@ -29,23 +32,29 @@ export default function UsuarioForm() {
   useEffect(() => {
     if (id) {
       if (!isNaN(Number(id))) {
-        Usuario.getUsuario(Number(id))
-          .then(res => {
-            setNome(res.nome);
-            setEmail(res.email);
-            setDescricao(res.descricao);
-          })
-          .catch(e => console.log(e));
+        console.log(id, usuario);
+        if (Number(id) !== usuario?.id) {
+          setUnauth(true);
+        } else {
+          Usuario.getUsuario(Number(id))
+            .then(res => {
+              setNome(res.nome);
+              setEmail(res.email);
+              setDescricao(res.descricao);
+            })
+            .catch(e => console.log(e));
+        }
       } else {
         setError(true);
       }
     }
-  }, [])
+  }, [id, usuario]);
 
   return (
     <div>
       <Button variant="text" className="novousuario-voltar" onClick={() => nav(-1)}>Voltar</Button>
-      {!error ?
+      {unauth && <p className="novousuario-error">Você não tem permissão para editar outro usuário.</p>}
+      {!error && !unauth &&
         <>
           <h1 className="novousuario-title">
             {id ? 'Novo usuário' : 'Editar dados'}
@@ -95,7 +104,7 @@ export default function UsuarioForm() {
               {id ? 'Editar dados' : 'Criar usuário'}
             </Button>
           </form>
-        </> : <p className="novousuario-error">ID de usuário inválido</p>
+        </>} {error && !unauth && <p className="novousuario-error">ID de usuário inválido</p>
       }
 
     </div>
