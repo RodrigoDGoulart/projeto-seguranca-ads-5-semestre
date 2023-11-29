@@ -2,6 +2,7 @@ interface Usuario {
     id: number;
     nome: string;
     email: string;
+    descricao: string;
 };
 
 interface Post {
