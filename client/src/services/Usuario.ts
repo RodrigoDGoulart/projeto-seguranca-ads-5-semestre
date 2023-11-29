@@ -1,15 +1,20 @@
 import api from "./api";
 import { Usuario as UsuarioType } from '../types';
 
-interface UsuarioInput {
+interface NewUsuarioForm {
   nome: string;
   email: string;
   senha: string;
   descricao: string;
 }
+interface UsuarioUpdateForm {
+  nome: string;
+  email: string;
+  descricao: string;
+}
 
 class Usuario {
-  async criar(usuario: UsuarioInput) {
+  async criar(usuario: NewUsuarioForm) {
     console.log(usuario);
   };
 
@@ -38,6 +43,10 @@ class Usuario {
 
   async delete(id: number) {
     console.log('exlcuindo ', id);
+  }
+
+  async update(id: number, usuario: UsuarioUpdateForm) {
+    console.log('foi');
   }
 }
 

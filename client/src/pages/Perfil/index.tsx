@@ -58,7 +58,7 @@ export default function Perfil() {
         {loading && <div>Carregando...</div>}
         {!loading && error && <>
           <div>
-            Algo errado aconteceu. Tente novamente mais tarde
+            ID de usuário inválido.
           </div>
         </>}
       </div>
