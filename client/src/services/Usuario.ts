@@ -1,5 +1,5 @@
 import api from "./api";
-import { Usuario as UsuarioType } from '../types';
+import { Usuario as UsuarioType, UsuarioContext } from '../types/usuario';
 
 interface NewUsuarioForm {
   nome: string;
@@ -37,7 +37,7 @@ class Usuario {
     };
   }
 
-  async login(login: {email: string; senha: string}) {
+  async login(login: {email: string; senha: string}): Promise<UsuarioContext> {
     return {
       id: 333,
       nome: 'Fulano',
@@ -47,7 +47,8 @@ class Usuario {
 
       Nam aliquam mauris eget lectus interdum volutpat. Aliquam bibendum est at justo sollicitudin, nec accumsan mi sollicitudin. Etiam imperdiet imperdiet ex lacinia scelerisque. Quisque molestie dolor id risus tristique, eu mattis lacus suscipit. Maecenas quis ipsum at ipsum faucibus laoreet et varius mi. In hac habitasse platea dictumst. Vivamus venenatis nunc nisi, id pharetra enim condimentum a. Aliquam ullamcorper, diam ac lobortis porta, tellus ipsum sagittis tortor, ut dapibus nulla quam et diam. Integer eleifend orci nulla, quis commodo diam semper sed. Nunc ultrices massa dolor, ac luctus purus fringilla ac. Sed auctor mauris ut sapien elementum, a eleifend elit convallis. Nullam rhoncus ipsum tortor, in convallis lorem egestas vel. Proin tristique purus ac malesuada tincidunt. Nulla facilisi. Fusce ac massa pretium, suscipit risus id, hendrerit lorem. Curabitur vel vulputate erat, id iaculis lacus.
       
-      Proin quam libero, cursus aliquet vehicula in, sodales sed magna. Aenean tristique consectetur elit, a vestibulum lacus pharetra egestas. Duis vitae erat nec tortor convallis porttitor. Etiam sed mauris sed eros convallis lobortis. Suspendisse potenti. Nulla tincidunt diam nec tortor mattis, at ultricies nulla congue. Sed rutrum pellentesque tincidunt. Phasellus eu quam sed nisl sodales tincidunt ut a enim. Morbi velit orci, maximus at ornare eu, interdum eu tortor. Integer justo urna, tincidunt ac ullamcorper ac, volutpat a risus. Nunc sit amet mattis justo. In semper quam vel odio interdum, varius dictum lacus vulputate.`)
+      Proin quam libero, cursus aliquet vehicula in, sodales sed magna. Aenean tristique consectetur elit, a vestibulum lacus pharetra egestas. Duis vitae erat nec tortor convallis porttitor. Etiam sed mauris sed eros convallis lobortis. Suspendisse potenti. Nulla tincidunt diam nec tortor mattis, at ultricies nulla congue. Sed rutrum pellentesque tincidunt. Phasellus eu quam sed nisl sodales tincidunt ut a enim. Morbi velit orci, maximus at ornare eu, interdum eu tortor. Integer justo urna, tincidunt ac ullamcorper ac, volutpat a risus. Nunc sit amet mattis justo. In semper quam vel odio interdum, varius dictum lacus vulputate.`),
+      acceptedTerms: '123123123'
     };
   }
 
@@ -57,6 +58,10 @@ class Usuario {
 
   async update(id: number, usuario: UsuarioUpdateForm) {
     console.log('foi');
+  }
+
+  async agreeNewTerms(id: number) {
+    console.log(id);
   }
 }
 

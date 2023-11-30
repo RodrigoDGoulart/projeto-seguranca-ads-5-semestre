@@ -1,21 +1,19 @@
 import { createContext, useEffect, useState } from "react";
-import { Usuario } from "../types";
+import { UsuarioContext } from "../types/usuario";
 
 interface ContextProps {
-  usuario: Usuario | undefined;
-  setUsuario: React.Dispatch<React.SetStateAction<Usuario | undefined>>;
+  usuario: UsuarioContext | undefined;
+  setUsuario: React.Dispatch<React.SetStateAction<UsuarioContext | undefined>>;
 };
 
 const Contexto = createContext({} as ContextProps);
 
 function ContextoProvider({ children }: any) {
-  const [usuario, setUsuario] = useState<Usuario>();
+  const [usuario, setUsuario] = useState<UsuarioContext>();
 
   useEffect(() => {
-    console.log(usuario);
     if (!usuario) {
       const usuarioJSON = sessionStorage.getItem('usuario');
-      console.log(usuarioJSON);
       setUsuario(JSON.parse(usuarioJSON as string));
     }
   }, [usuario]);

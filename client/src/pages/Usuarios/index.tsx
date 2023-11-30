@@ -1,6 +1,6 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Usuario } from "../../types";
+import { Usuario } from "../../types/usuario";
 import UsuarioAPI from "../../services/Usuario";
 
 import './index.css';

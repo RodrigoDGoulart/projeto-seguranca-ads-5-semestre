@@ -5,6 +5,8 @@ import Usuario from "../../services/Usuario";
 
 import './index.css';
 import { useContexto } from "../../hooks/useContexto";
+import { Termo } from "../../types/termo";
+import Termos from "../../services/Termos";
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -27,6 +29,8 @@ export default function UsuarioForm() {
   const [senha, setSenha] = useState('');
   const [descricao, setDescricao] = useState('');
   const [politicasCheck, setPoliticasCheck] = useState(false);
+
+  const [termos, setTermos] = useState<Termo>();
 
   const [error, setError] = useState(false);
   const [unauth, setUnauth] = useState(false);
@@ -61,6 +65,7 @@ export default function UsuarioForm() {
         setError(true);
       }
     }
+    Termos.getLastTerm().then(res => setTermos(res));
   }, [id, usuario]);
 
   return (
@@ -143,16 +148,11 @@ export default function UsuarioForm() {
           <Typography id="modal-modal-title" variant="h5" component="h1" align="center">
             Políticas de Privacidade
           </Typography>
+          <Typography id="modal-modal-title" component="h1" align="center">
+            Atualizado em{` ${new Date(termos?.data as string).toLocaleDateString('pt-BR')}`}
+          </Typography>
           <div className="novousuario-modal-texto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac tristique ligula. Nunc et bibendum magna. Nam porta cursus porta. Proin lacinia augue dolor, non sagittis libero aliquet nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque quam lorem, molestie vitae tortor eget, placerat egestas erat. Curabitur sed tincidunt magna. Vestibulum venenatis elementum lacus non lacinia. In venenatis elementum turpis, quis scelerisque nulla blandit eu. Ut mattis, nisl nec consectetur rutrum, ex elit egestas tortor, vitae accumsan turpis justo in lectus. Morbi euismod, eros ut egestas laoreet, diam ante viverra turpis, ac auctor velit magna eu libero. Integer vulputate dui ac nunc fermentum vehicula. Praesent tempor lobortis porttitor. Donec lorem ex, maximus eu nunc nec, eleifend luctus sapien. Suspendisse sit amet odio sed sapien convallis gravida. Mauris luctus mi sapien, at pharetra mauris condimentum sit amet.
-
-            Donec fermentum venenatis mauris sit amet mollis. Nulla vitae elit sed metus iaculis vestibulum. Quisque rutrum auctor nulla, hendrerit dignissim felis lacinia et. Integer pretium sit amet mauris at porta. Nulla sem sem, efficitur quis ligula non, iaculis iaculis purus. Aenean molestie diam a urna suscipit, vitae euismod elit gravida. Aenean euismod elit non elit vehicula, commodo placerat ex pellentesque. Vestibulum aliquet arcu rhoncus erat auctor posuere. Vestibulum pharetra quam nisl, quis fringilla enim vulputate ut.
-
-            In ac volutpat dui. Quisque mollis odio a nunc ultricies viverra. Fusce consectetur nibh arcu, eget dapibus mauris interdum sit amet. Mauris condimentum ligula quis nisl facilisis, eu vulputate erat fermentum. Suspendisse ut sem eget nibh mollis iaculis. Mauris porttitor metus sed nisi cursus, sit amet pellentesque turpis accumsan. Mauris id nulla consectetur, cursus orci sed, tincidunt purus. Fusce ac orci id nisi mollis tristique at eu est. Nam venenatis, erat nec ultricies blandit, nulla arcu venenatis ante, ac egestas sapien tellus sed sapien. Vivamus vitae eleifend quam.
-
-            Nam ullamcorper velit eget ipsum volutpat aliquet. Vestibulum malesuada bibendum bibendum. Aliquam interdum, nisl sed vestibulum condimentum, magna eros vestibulum dui, eget gravida massa ante sed elit. Morbi sit amet aliquam nulla. Aliquam erat purus, laoreet sed quam a, placerat suscipit magna. Pellentesque egestas vitae turpis in dictum. Quisque tempor purus nunc, sed accumsan augue tincidunt et. Duis congue purus dolor, vitae viverra lacus auctor eu.
-
-            Phasellus nisi justo, dapibus quis dui sed, blandit auctor lacus. In finibus, velit luctus condimentum fringilla, erat libero elementum nisi, in scelerisque ipsum leo eget neque. Cras auctor lorem at metus rhoncus, elementum tristique augue luctus. Aliquam eu magna et metus iaculis tempor ut ac massa. Fusce eu tortor id est pretium vehicula vitae id lectus. Vivamus faucibus tellus quis dictum posuere. Donec euismod neque eros, eu congue risus maximus vitae.
+            {termos?.termo}
           </div>
         </Box>
       </Modal>

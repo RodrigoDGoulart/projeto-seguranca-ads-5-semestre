@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Usuario from "../../services/Usuario";
 import { Button } from "@mui/material";
-import { Usuario as UsuarioType } from "../../types";
+import { Usuario as UsuarioType } from "../../types/usuario";
 import { useContexto } from "../../hooks/useContexto";
 
 import './index.css';
+import DeleteAccountModal from "../../components/DeleteAccountModal";
 
 export default function Perfil() {
   const { id } = useParams();
@@ -17,10 +18,7 @@ export default function Perfil() {
   const [loading, setLoading] = useState(true);
   const [ownUser, setOwnUser] = useState(false);
 
-  const excluir = async () => {
-    await Usuario.delete(Number(id))
-    nav(-1);
-  }
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const editar = () => {
     nav(`/editar/${usuario?.id}`);
@@ -46,6 +44,10 @@ export default function Perfil() {
   return (
     <>
       <Button variant="text" className="novousuario-voltar" onClick={() => nav(-1)}>Voltar</Button>
+      <DeleteAccountModal 
+        open={deleteModal} 
+        onClose={() => setDeleteModal(false)}
+      />
       <div className="perfil-container">
         {usuarioSelected && !loading && !error &&
           <>
@@ -59,7 +61,7 @@ export default function Perfil() {
               <Button 
                 variant="contained" 
                 color="error" 
-                onClick={() => excluir()}
+                onClick={() => setDeleteModal(true)}
               >
                   Excluir conta
               </Button>
