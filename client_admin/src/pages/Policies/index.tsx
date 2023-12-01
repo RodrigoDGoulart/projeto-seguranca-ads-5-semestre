@@ -1,8 +1,11 @@
-import { Paper, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { PoliticaItem as PoliticaItemType, Politica as PoliticaType } from '../../types/politica';
+import { useNavigate } from 'react-router-dom';
+
+
+import { Button, Paper } from '@mui/material';
 import { DataGrid, GridColDef, GridRowId } from '@mui/x-data-grid';
 
+import { PoliticaItem as PoliticaItemType, Politica as PoliticaType } from '../../types/politica';
 import Politica from '../../services/Politica';
 
 import './index.css';
@@ -14,6 +17,8 @@ const columns: GridColDef[] = [
 ]
 
 export default function Policies() {
+  const nav = useNavigate();
+
   const [lista, setLista] = useState<PoliticaItemType[]>([]);
   const [policy, setPolicy] = useState<PoliticaType>();
   const [policyID, setPolicyID] = useState('');
@@ -33,7 +38,9 @@ export default function Policies() {
     }
   }
 
-  const updatePolicy = () => {}
+  const updatePolicy = () => {
+    nav('/policies/update')
+  }
 
   useEffect(() => {
     Politica.getPoliticas()
@@ -46,7 +53,6 @@ export default function Policies() {
       <div className='policies-content-container'>
         <div className='policies-content-list'>
           <Button
-            disabled={!policyID}
             variant='contained'
             onClick={() => {
               updatePolicy();
