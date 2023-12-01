@@ -1,4 +1,5 @@
 import { PoliticaItem as PoliticaItemType, Politica as PoliticaType } from "../types/politica";
+import { UsuarioLog } from "../types/usuario";
 
 class Politica {
   async getPoliticas(): Promise<PoliticaItemType[]> {
@@ -88,6 +89,16 @@ class Politica {
   async updatePolitica (texto: string ) {
     const data = new Date().toISOString();
     console.log('update politica', data, texto);
+  }
+
+  async getUsuarioLog (): Promise<UsuarioLog[]> {
+    const lista:UsuarioLog[] = [
+      {id_usuario: '123', data: new Date().toISOString(), nome_usuario: 'Fulano1'},
+      {id_usuario: '123456', data: new Date().toISOString(), nome_usuario: 'Fulano2'},
+      {id_usuario: '123789', data: new Date().toISOString(), nome_usuario: 'Fulano3'},
+      {id_usuario: '123123', data: new Date().toISOString(), nome_usuario: 'Fulano4'},
+    ]
+    return lista;
   }
 }
 

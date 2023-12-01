@@ -9,7 +9,14 @@ interface UsuarioContext extends Usuario {
   acceptedTerms: string
 }
 
+interface UsuarioLog {
+  id_usuario: string;
+  nome_usuario: string;
+  data: string;
+}
+
 export type {
   Usuario,
-  UsuarioContext
+  UsuarioContext,
+  UsuarioLog,
 }

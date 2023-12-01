@@ -12,6 +12,7 @@ import Backups from "./pages/Backups";
 import './index.css';
 import Policies from "./pages/Policies";
 import UpdatePolicies from "./pages/UpdatePolicies";
+import LogUsuario from "./pages/LogUsuario";
 
 export default function AppRoutes() {
   const { token } = useContexto();
@@ -26,6 +27,7 @@ export default function AppRoutes() {
             <Route path='/backups' element={<Header element={<Backups />} />} />
             <Route path='/policies' element={<Header element={<Policies />} />} />
             <Route path='/policies/update' element={<Header element={<UpdatePolicies />} />} />
+            <Route path='/users' element={<Header element={<LogUsuario />} />} />
           </>}
           <Route path='*' element={<NotFound />} />
         </Routes>

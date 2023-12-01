@@ -1,0 +1,19 @@
+.logusuario-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logusuario-title {
+  max-width: 400px;
+  text-align: center;
+}
+
+.logusuario-content {
+  width: 100%;
+  height: calc(100vh - 180px);
+  box-sizing: border-box;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
