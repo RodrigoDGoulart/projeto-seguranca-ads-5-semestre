@@ -5,6 +5,7 @@ import { useContexto } from "./hooks/useContexto";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Header from "./components/Header";
 
 export default function AppRoutes() {
   const { token } = useContexto();
@@ -14,7 +15,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path='/' element={<Login />} />
         {token && <>
-          <Route path='/home' element={<Home />} />
+          <Route path='/home' element={<Header element={<Home />} />} />
         </>}
         <Route path='*' element={<NotFound />} />
       </Routes>
