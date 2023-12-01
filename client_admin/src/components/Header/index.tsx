@@ -8,7 +8,7 @@ interface Props {
 
 const links: { label: string; url: string }[] = [
   { label: 'Home', url: '/home' },
-  { label: 'Políticas de privacidade', url: '/politics' },
+  { label: 'Políticas de privacidade', url: '/policies' },
   { label: 'Backups', url: '/backups' },
   { label: 'Usuários', url: '/users' },
 ]

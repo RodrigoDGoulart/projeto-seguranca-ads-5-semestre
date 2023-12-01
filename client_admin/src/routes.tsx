@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Backups from "./pages/Backups";
 
 import './index.css';
+import Policies from "./pages/Policies";
 
 export default function AppRoutes() {
   const { token } = useContexto();
@@ -22,6 +23,7 @@ export default function AppRoutes() {
           {token && <>
             <Route path='/home' element={<Header element={<Home />} />} />
             <Route path='/backups' element={<Header element={<Backups />} />} />
+            <Route path='/policies' element={<Header element={<Policies />} />} />
           </>}
           <Route path='*' element={<NotFound />} />
         </Routes>

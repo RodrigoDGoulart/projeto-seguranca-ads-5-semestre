@@ -1,0 +1,50 @@
+.policies-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.policies-content-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 18px;
+  gap: 12px;
+}
+
+.policies-content-list, .policies-content-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.policies-content-list {
+  gap: 12px;
+  max-width: 500px;
+}
+
+.policies-list-btn {
+  width: 100%;
+}
+
+.policies-content-info {
+  box-sizing: border-box;
+  padding: 0px 24px;
+}
+
+.policies-info-noselected {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.policies-info-content {
+  text-align: justify;
+  overflow: scroll;
+  scroll-behavior: auto;
+  max-height: 500px;
+}
