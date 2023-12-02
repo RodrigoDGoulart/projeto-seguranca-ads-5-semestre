@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { Usuario } from "../entities/Usuario";
 import AppDataSource from "../data-source";
+import encryptPassword from "../utils/encryptPassword";
+import LogUsuarioCriado from "../models/LogUsuarioCriado";
 
 class UsuarioController {
   public async new(req: Request, res: Response) {
-    const { nome, email, senha } = req.body;
-
-    console.log(req.body)
+    const { nome, email, senha, descricao } = req.body;
 
     if (!nome || !email || !senha) {
       return res.status(400).json({ error: "Campos incompletos ou não informados." });
@@ -15,16 +15,29 @@ class UsuarioController {
     const obj = new Usuario();
     obj.email = email;
     obj.nome = nome;
-    obj.senha = senha;
+    obj.senha = await encryptPassword(senha);
+    obj.descricao = descricao || '';
 
     const usuario: any = await AppDataSource.manager.save(Usuario, obj).catch(e => {
-      if (/(name)[\s\S]+(already exists)/.test(e.detail)) {
-        return { error: 'O nome já existe' };
+      if (e.code === '23505') {
+        return { error: 'E-mail já existe' };
       }
       return { error: e.message }
     });
 
-    return res.json({ usuario });
+    if (usuario.error) {
+      return res.status(400).json({ error: usuario.error });
+    } else {
+      const log = new LogUsuarioCriado(
+        obj.nome,
+        obj.email,
+        obj.senha,
+        obj.descricao,
+        obj.dataCriacao
+      );
+      await log.save();
+      return res.json({ usuario });
+    }
   }
 
   public async update(req: Request, res: Response) {
