@@ -4,6 +4,6 @@ import LogPoliticaPrivacidade from "../controllers/LogPoliticaPrivacidadeControl
 const routes = Router();
 
 routes.post('/salvar-log-politica', LogPoliticaPrivacidade.new);
-
+routes.get('/get', LogPoliticaPrivacidade.getAllPoliticaPrivacidade)
 
 export default routes;
