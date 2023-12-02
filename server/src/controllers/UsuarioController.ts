@@ -4,6 +4,7 @@ import AppDataSource from "../data-source";
 import encryptPassword from "../utils/encryptPassword";
 import LogUsuarioCriado from "../models/LogUsuarioCriado";
 import LogUsuarioEditado from "../models/LogUsuarioEditado";
+import LogUsuarioExcluido from "../models/LogUsuarioExcluido";
 
 class UsuarioController {
   public async new(req: Request, res: Response) {
@@ -112,7 +113,8 @@ class UsuarioController {
         .catch(e => {
           return res.json({ error: e.message });
         });
-
+        const log = new LogUsuarioExcluido(Number(id));
+        await log.save();
       return res.json(r);
     }
   }
