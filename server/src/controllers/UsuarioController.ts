@@ -3,6 +3,7 @@ import { Usuario } from "../entities/Usuario";
 import AppDataSource from "../data-source";
 import encryptPassword from "../utils/encryptPassword";
 import LogUsuarioCriado from "../models/LogUsuarioCriado";
+import LogUsuarioEditado from "../models/LogUsuarioEditado";
 
 class UsuarioController {
   public async new(req: Request, res: Response) {
@@ -47,37 +48,50 @@ class UsuarioController {
       return res.json({ error: "Identificador inválido." });
     }
 
-    const { nome, email, senha } = req.body;
+    const { nome, email, descricao } = req.body;
 
-    const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: Number(id) })
-      .catch(e => {
-        return res.json({ error: "Usuário não encontrado." });
-      });
+    console.log('getting usuario')
+    try {
+      const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: Number(id) })
 
-    if (usuario && usuario.id) {
+      if (!usuario) {
+        return res.json({ error: "Usuário não encontrado"})
+      }
+      
       if (nome) {
         usuario.nome = nome;
       }
       if (email) {
         usuario.email = email;
       }
-      if (senha) {
-        usuario.senha = senha;
+      if (descricao) {
+        usuario.descricao = descricao;
       }
 
+      console.log('editando')
       const r = await AppDataSource.manager.save(Usuario, usuario)
         .catch(e => {
-          if (/(name)[\s\S]+(already exists)/.test(e.detail)) {
-            return ({ error: 'nome já existe' });
+          if (e.code === '23505') {
+            return { error: 'E-mail já existe' };
           }
           return ({ error: e.message });
         });
 
       if (r.error) {
         return res.status(400).json(r);
+      } else {
+        console.log('logging')
+        const log = new LogUsuarioEditado(
+          Number(id),
+          usuario.nome,
+          usuario.email,
+          usuario.descricao
+        )
+        await log.save();
+        return res.json(r);
       }
-
-      return res.json(r);
+    } catch (e) {
+      console.log(e)
     }
   }
 

@@ -1,12 +1,11 @@
 import ConexaoMongo from "./ConexaoMongo";
 
-class LogUsuarioCriado {
+class LogUsuarioEditado {
   constructor(
+    public id: Number,
     public nome: String,
     public email: String,
-    public senha: String,
     public descricao: String,
-    public dataCriacao: Date,
   ) { }
 
   async save(): Promise<void> {
@@ -15,13 +14,12 @@ class LogUsuarioCriado {
     try {
       await conexaoMongoService.conectar();
       console.log("conectou")
-      const logCollection = conexaoMongoService.getBancoDados().collection("log_usuario_criado");
+      const logCollection = conexaoMongoService.getBancoDados().collection("log_usuario_editado");
       await logCollection.insertOne({
+        id: this.id,
         nome: this.nome,
         email: this.email,
-        senha: this.senha,
         descricao: this.descricao,
-        dataCriacao: this.dataCriacao
       })
     } finally {
       await conexaoMongoService.desconectar();
@@ -29,4 +27,4 @@ class LogUsuarioCriado {
   }
 }
 
-export default LogUsuarioCriado
+export default LogUsuarioEditado
