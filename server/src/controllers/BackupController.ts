@@ -11,8 +11,25 @@ class BackupController {
   }
 
   public async createBackupCallback(req: Request, res: Response) {
-    // limpar logs
-
+    const conexao_mongodb = ConexaoMongo;
+    await conexao_mongodb.conectar();
+    
+    try {
+      // leitura log usuarios criados
+      const usuariosCriados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_criado');
+      const usuariosEditados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_editado');
+      const usuariosExcluidos_collection = conexao_mongodb.getBancoDados().collection('log_usuario_excluido');
+      
+      // limpar logs
+      await usuariosCriados_collection.deleteMany({})
+      await usuariosEditados_collection.deleteMany({})
+      await usuariosExcluidos_collection.deleteMany({})
+    } catch (e) {
+      return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
+    } finally {
+      conexao_mongodb.desconectar();
+      return res.sendStatus(200);
+    }
   }
 
   public async restoreBackup(req: Request, res: Response) {
