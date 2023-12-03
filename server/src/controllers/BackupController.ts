@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ConexaoMongo from "../models/ConexaoMongo";
 import AppDataSource from "../data-source";
 import { Usuario } from "../entities/Usuario";
+import elephantSqlApi from "../utils/elephantSqlApi";
 
 
 class BackupController {
@@ -91,7 +92,14 @@ class BackupController {
   }
 
   public async getLastBackup (req: Request, res: Response) {
-    res.sendStatus(200);
+    const backups = await elephantSqlApi.getBackups();
+    const backup = backups[0]
+    try {
+      console.log(new Date(backup.backup_date))
+      return res.status(200).json(backup);
+    } catch (e) {
+      return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
+    }
   }
 }
 
