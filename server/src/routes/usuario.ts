@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UsuarioController from "../controllers/UsuarioController";
+import tokenValidation from "../middlewares/tokenValidation";
 
 const routes = Router();
 
@@ -7,10 +8,12 @@ routes.post('/', UsuarioController.new);
 
 routes.get('/', UsuarioController.get);
 
+routes.put('/', tokenValidation.anyUserVerification, UsuarioController.update);
+
+routes.delete('/', tokenValidation.anyUserVerification, UsuarioController.delete);
+
+routes.post('/login', UsuarioController.login);
+
 routes.get('/:id', UsuarioController.getById);
-
-routes.put('/:id', UsuarioController.update);
-
-routes.delete('/:id', UsuarioController.delete);
 
 export default routes;
