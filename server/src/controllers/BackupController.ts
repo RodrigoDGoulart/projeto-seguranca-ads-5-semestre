@@ -8,7 +8,24 @@ import elephantSqlApi from "../utils/elephantSqlApi";
 class BackupController {
   public async createBackup(req: Request, res: Response) {
     // requisição p/ elephantsql criar backup
-
+    const retorno = await elephantSqlApi.createBackup();
+    try {
+      if (retorno.code !== 200) {
+        return res.status(500).json({
+          error: 'Erro desconhecido',
+          errorCode: '500-unkown-error',
+          details: { ...retorno.data }
+        })
+      } else {
+        return res.sendStatus(200);
+      }
+    } catch (e) {
+      return res.status(500).json({
+        error: 'Erro no servidor',
+        errorCode: '500-server-error',
+        details: {...e}
+      });
+    }
   }
 
   public async createBackupCallback(req: Request, res: Response) {
@@ -22,9 +39,9 @@ class BackupController {
       const usuariosExcluidos_collection = conexao_mongodb.getBancoDados().collection('log_usuario_excluido');
       
       // limpar logs
-      await usuariosCriados_collection.deleteMany({})
-      await usuariosEditados_collection.deleteMany({})
-      await usuariosExcluidos_collection.deleteMany({})
+      await usuariosCriados_collection.deleteMany({});
+      await usuariosEditados_collection.deleteMany({});
+      await usuariosExcluidos_collection.deleteMany({});
     } catch (e) {
       return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
     } finally {
@@ -49,11 +66,11 @@ class BackupController {
       // criar usuarios no banco
       await AppDataSource.manager.save(Usuario, usuariosCriados.map(user => {
         const usuario = new Usuario();
-        usuario.descricao = user.descricao,
-        usuario.nome = user.nome,
-        usuario.email = user.email,
-        usuario.senha = user.senha,
-        usuario.dataCriacao = user.dataCriacao
+        usuario.descricao = user.descricao;
+        usuario.nome = user.nome;
+        usuario.email = user.email;
+        usuario.senha = user.senha;
+        usuario.dataCriacao = user.dataCriacao;
   
         return usuario;
       }));
@@ -65,10 +82,10 @@ class BackupController {
       // editar usuarios no banco
       await AppDataSource.manager.save(Usuario, usuariosEditados.map(user => {
         const usuario = new Usuario();
-        usuario.id = user.id,
-        usuario.descricao = user.descricao,
-        usuario.nome = user.nome,
-        usuario.email = user.email
+        usuario.id = user.id;
+        usuario.descricao = user.descricao;
+        usuario.nome = user.nome;
+        usuario.email = user.email;
   
         return usuario;
       }));
@@ -93,9 +110,8 @@ class BackupController {
 
   public async getLastBackup (req: Request, res: Response) {
     const backups = await elephantSqlApi.getBackups();
-    const backup = backups[0]
+    const backup = backups[0];
     try {
-      console.log(new Date(backup.backup_date))
       return res.status(200).json(backup);
     } catch (e) {
       return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
