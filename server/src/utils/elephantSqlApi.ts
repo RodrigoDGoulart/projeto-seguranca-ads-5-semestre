@@ -30,6 +30,23 @@ class ElephantSqlApi {
     const data = code === 200 ? {} : await res.json();
     return {data, code};
   }
+
+  public async restore(id: number) {
+    const res = await fetch(`${elephant_base_url}/restore`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + btoa(process.env.DB_BACKUP_USERNAME + ':' + process.env.DB_BACKUP_API_KEY),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        callback: process.env.RESTORE_CALLBACK_URL,
+        backup_id: id,
+      }),
+    });
+    const code = res.status;
+    const data = code === 200 ? {} : await res.json();
+    return {data, code};
+  }
 }
 
 export default new ElephantSqlApi();
