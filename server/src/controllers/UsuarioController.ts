@@ -11,7 +11,7 @@ class UsuarioController {
     const { nome, email, senha, descricao } = req.body;
 
     if (!nome || !email || !senha) {
-      return res.status(400).json({ error: "Campos incompletos ou não informados." });
+      return res.status(400).json({ error: "Campos incompletos ou não informados.", errorCode: "400-undefined-fields" });
     }
 
     const obj = new Usuario();
@@ -20,15 +20,18 @@ class UsuarioController {
     obj.senha = await encryptPassword(senha);
     obj.descricao = descricao || '';
 
-    const usuario: any = await AppDataSource.manager.save(Usuario, obj).catch(e => {
-      if (e.code === '23505') {
-        return { error: 'E-mail já existe' };
-      }
-      return { error: e.message }
-    });
+    const emailVerify = await AppDataSource.manager.findBy(Usuario, { email });
+    if (emailVerify.length) {
+      return res.status(400).json({ error: 'E-mail já cadastrado.', errorCode: '400-already-email' });
+    }
+
+    const usuario: any = await AppDataSource.manager.save(Usuario, obj)
+      .catch(e => {
+        return { error: e.message, errorCode: '500-bd-error' }
+      });
 
     if (usuario.error) {
-      return res.status(400).json({ error: usuario.error });
+      return res.status(500).json({ ...usuario });
     } else {
       const log = new LogUsuarioCriado(
         obj.nome,
@@ -51,12 +54,18 @@ class UsuarioController {
 
     const { nome, email, descricao } = req.body;
 
-    console.log('getting usuario')
+    if (email) {
+      const emailVerify = await AppDataSource.manager.findBy(Usuario, { email });
+      if (emailVerify.length) {
+        return res.status(400).json({ error: 'E-mail já cadastrado.', errorCode: '400-already-email' });
+      }
+    }
+
     try {
       const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: Number(id) })
 
       if (!usuario) {
-        return res.json({ error: "Usuário não encontrado"})
+        return res.json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'})
       }
       
       if (nome) {
@@ -69,19 +78,14 @@ class UsuarioController {
         usuario.descricao = descricao;
       }
 
-      console.log('editando')
       const r = await AppDataSource.manager.save(Usuario, usuario)
         .catch(e => {
-          if (e.code === '23505') {
-            return { error: 'E-mail já existe' };
-          }
-          return ({ error: e.message });
+          return ({ error: e.message, errorCode: '500-bd-error' });
         });
 
       if (r.error) {
-        return res.status(400).json(r);
+        return res.status(400).json({ ...r });
       } else {
-        console.log('logging')
         const log = new LogUsuarioEditado(
           Number(id),
           usuario.nome,
@@ -92,7 +96,7 @@ class UsuarioController {
         return res.json(r);
       }
     } catch (e) {
-      console.log(e)
+      return res.status(500).json({ error: 'Erro desconhecido', errorCode: '500-server-error', details: {...e}});
     }
   }
 
@@ -101,21 +105,24 @@ class UsuarioController {
 
     const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: Number(id) })
       .catch(e => {
-        return res.json({ error: "Usuário não encontrado." });
+        return res.status(404).json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'});
       });
 
     if (!usuario) {
-      return res.json({ error: "Usuário não encontrado." });
+      return res.status(404).json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'});
     }
-
-    if (usuario && usuario.id) {
-      const r = await AppDataSource.manager.delete(Usuario, { id: Number(id) })
-        .catch(e => {
-          return res.json({ error: e.message });
-        });
-        const log = new LogUsuarioExcluido(Number(id));
-        await log.save();
-      return res.json(r);
+    try {
+      if (usuario && usuario.id) {
+        const r = await AppDataSource.manager.delete(Usuario, { id: Number(id) })
+          .catch(e => {
+            return res.json({ error: e.message });
+          });
+          const log = new LogUsuarioExcluido(Number(id));
+          await log.save();
+        return res.json(r);
+      }
+    } catch (e) {
+      return res.status(500).json({ error: 'Erro desconhecido', errorCode: '500-server-error', details: {...e}});
     }
   }
 
@@ -129,16 +136,16 @@ class UsuarioController {
     const { id } = req.params;
 
     if (isNaN(Number(id))) {
-      return res.json({ error: "Identificador inválido." });
+      return res.status(400).json({ error: "Identificador inválido.", errorCode: "400-invalid-id" });
     }
 
     const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: Number(id) })
     .catch(e => {
-      return res.json({ error: "Usuário não encontrado." });;
+      return res.status(404).json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'});
     });
 
     if (!usuario) {
-      return res.json({ error: "Usuário não encontrado." });
+      return res.status(404).json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'});
     }
 
     return res.json(usuario);
