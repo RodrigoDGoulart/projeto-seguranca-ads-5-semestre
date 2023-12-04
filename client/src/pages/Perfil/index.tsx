@@ -21,15 +21,15 @@ export default function Perfil() {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const editar = () => {
-    nav(`/editar/${usuario?.id}`);
+    nav(`/editar/${usuario?.usuario.id}`);
   }
 
   useEffect(() => {
     setLoading(true);
     if (!isNaN(Number(id))) {
-      if (Number(id) === usuario?.id) {
+      if (Number(id) === usuario?.usuario.id) {
         setOwnUser(true);
-        setUsuarioSelected(usuario);
+        setUsuarioSelected(usuario.usuario);
       } else {
         Usuario.getUsuario(Number(id)).then(res => {
           setUsuarioSelected(res);

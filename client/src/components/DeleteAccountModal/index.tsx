@@ -25,7 +25,7 @@ export default function DeleteAccountModal (props: Props) {
   const nav = useNavigate();
 
   const deleteAccount = async () => {
-    await Usuario.delete(usuario?.id as number);
+    await Usuario.delete(usuario?.usuario.id as number);
     setUsuario(undefined);
     sessionStorage.removeItem('usuario');
     nav('/');

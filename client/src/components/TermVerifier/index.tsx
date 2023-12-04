@@ -36,14 +36,14 @@ export default function TermVerifier({ page }: Props) {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const agree = async () => {
-    await Usuario.agreeNewTerms(usuario?.id as number);
+    await Usuario.agreeNewTerms(usuario?.usuario.id as number);
     setNewTermsModal(false);
   }
 
   useEffect(() => {
     const getTerms = async () => {
       const lastTerms = await Termos.getLastTerm();
-      if (usuario && usuario.acceptedTerms !== lastTerms.id) {
+      if (usuario && usuario.usuario.acceptedTerms !== lastTerms.id) {
         setNewTermsModal(true);
         setTermos(lastTerms);
       }

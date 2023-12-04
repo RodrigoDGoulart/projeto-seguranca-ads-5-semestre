@@ -50,7 +50,7 @@ export default function UsuarioForm() {
     if (id) {
       if (!isNaN(Number(id))) {
         console.log(id, usuario);
-        if (Number(id) !== usuario?.id) {
+        if (Number(id) !== usuario?.usuario.id) {
           setUnauth(true);
         } else {
           Usuario.getUsuario(Number(id))

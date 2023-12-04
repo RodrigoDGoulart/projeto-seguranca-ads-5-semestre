@@ -11,8 +11,13 @@ interface UsuarioItem {
   email: string;
 }
 
-interface UsuarioContext extends Usuario {
-  acceptedTerms: string
+interface UsuarioInfoContext extends Usuario {
+  acceptedTerms: string;
+}
+
+interface UsuarioContext {
+  usuario: UsuarioInfoContext;
+  token: string;
 }
 
 export type {
