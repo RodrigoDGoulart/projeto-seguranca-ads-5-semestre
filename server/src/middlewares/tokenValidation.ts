@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 dotenv.config();
 
 interface User {
-  id: string;
+  id: number;
   isAdmin: boolean;
 }
 
@@ -33,7 +33,15 @@ class TokenValidation {
         return res.status(401).json({ error: "Token inválido.", errorCode: '401-invalid-token' });
       }
 
-      req.user = decoded as User;
+      const user = decoded as User;
+      if (user.isAdmin) {
+        return res.status(401).json({ 
+          error: "Requisição somente para usuário comum",
+          errorCode: "401-not-admin"
+        });
+      }
+
+      req.user = user;
       
       next();
     });
