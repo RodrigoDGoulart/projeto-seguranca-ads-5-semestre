@@ -20,4 +20,7 @@ export class Usuario {
 
     @CreateDateColumn()
     dataCriacao: Date;
+
+    @Column({nullable: false})
+    id_politica_privacidade: string;
 }

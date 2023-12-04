@@ -7,6 +7,8 @@ import LogUsuarioEditado from "../models/LogUsuarioEditado";
 import LogUsuarioExcluido from "../models/LogUsuarioExcluido";
 import * as bcrypt from 'bcrypt';
 import { generateToken } from "../middlewares/generateToken";
+import ConexaoMongo from "../models/ConexaoMongo";
+import LogUsuarioPoliticas from "../models/LogUsuarioPoliticas";
 
 class UsuarioController {
   public async new(req: Request, res: Response) {
@@ -15,12 +17,18 @@ class UsuarioController {
     if (!nome || !email || !senha) {
       return res.status(400).json({ error: "Campos incompletos ou não informados.", errorCode: "400-undefined-fields" });
     }
+    const conexaoMongoService = ConexaoMongo;
+    await conexaoMongoService.conectar();
+    const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
+    const ultimoDocumento = await politicaPrivacidadeCollection.findOne({}, { sort: { data: -1 } });
+    const id_politica = ultimoDocumento._id.toString()
 
     const obj = new Usuario();
     obj.email = email;
     obj.nome = nome;
     obj.senha = await encryptPassword(senha);
     obj.descricao = descricao || '';
+    obj.id_politica_privacidade = id_politica
 
     const emailVerify = await AppDataSource.manager.findBy(Usuario, { email });
     if (emailVerify.length) {
@@ -35,14 +43,20 @@ class UsuarioController {
     if (usuario.error) {
       return res.status(500).json({ ...usuario });
     } else {
+      await AppDataSource.manager.save(Usuario, usuario)
       const log = new LogUsuarioCriado(
         obj.nome,
         obj.email,
         obj.senha,
         obj.descricao,
-        obj.dataCriacao
+        obj.dataCriacao,
+        obj.id_politica_privacidade
       );
       await log.save();
+
+      const logUsuarioPoliticas = new LogUsuarioPoliticas(usuario.id, new Date(), usuario.id_politica_privacidade);
+      // Salve o log do usuário de políticas usando o último _id do log de política de privacidade
+      await logUsuarioPoliticas.salvarLogUsuarioPoliticas();
       
       const token = await generateToken({id: usuario.id, isAdmin: false});
 
@@ -53,6 +67,7 @@ class UsuarioController {
           email: usuario.email,
           descricao: usuario.descricao,
           dataCriacao: usuario.dataCriacao,
+          id_politica_privacidade: usuario.id_politica_privacidade
         },
         token,
       });
@@ -191,6 +206,7 @@ class UsuarioController {
           email: usuario.email,
           descricao: usuario.descricao,
           dataCriacao: usuario.dataCriacao,
+          id_politica_privacidade: usuario.id_politica_privacidade
         },
         token,
       });

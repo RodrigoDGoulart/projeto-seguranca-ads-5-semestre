@@ -25,7 +25,7 @@ class LogUsuarioPoliticas {
         }
     }
 
-    private async obterUltimoIdPoliticaPrivacidade(): Promise<string | null> {
+    public async obterUltimoIdPoliticaPrivacidade(): Promise<string | null> {
         const conexaoMongoService = ConexaoMongo;
         try {
             await conexaoMongoService.conectar();

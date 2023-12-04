@@ -7,6 +7,7 @@ class LogUsuarioCriado {
     public senha: String,
     public descricao: String,
     public dataCriacao: Date,
+    public id_politica_privacidade: String
   ) { }
 
   async save(): Promise<void> {
@@ -21,7 +22,8 @@ class LogUsuarioCriado {
         email: this.email,
         senha: this.senha,
         descricao: this.descricao,
-        dataCriacao: this.dataCriacao
+        dataCriacao: this.dataCriacao,
+        id_politica_privacidade: this.id_politica_privacidade
       })
     } finally {
       await conexaoMongoService.desconectar();
