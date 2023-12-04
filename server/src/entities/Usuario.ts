@@ -15,6 +15,9 @@ export class Usuario {
     @Column({nullable: false, length: 200})
     senha: string;
 
+    @Column({nullable: true, length: 500})
+    descricao: string;
+
     @CreateDateColumn()
     dataCriacao: Date;
 }
