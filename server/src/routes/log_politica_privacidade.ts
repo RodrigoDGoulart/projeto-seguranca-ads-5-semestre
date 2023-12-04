@@ -1,9 +1,11 @@
 import { Router } from "express";
 import LogPoliticaPrivacidade from "../controllers/LogPoliticaPrivacidadeController";
+import LogUsuarioPolitica from "../controllers/LogUsuarioPoliticasController";
 
 const routes = Router();
 
-routes.post('/salvar-log-politica', LogPoliticaPrivacidade.new);
-routes.get('/get', LogPoliticaPrivacidade.getAllPoliticaPrivacidade)
-
+routes.get('/', LogPoliticaPrivacidade.getAllPoliticaPrivacidade)
+routes.post('/', LogPoliticaPrivacidade.new);
+routes.get('/get', LogPoliticaPrivacidade.getPoliticaPrivacidade)
+routes.post('/user', LogUsuarioPolitica.new)
 export default routes;

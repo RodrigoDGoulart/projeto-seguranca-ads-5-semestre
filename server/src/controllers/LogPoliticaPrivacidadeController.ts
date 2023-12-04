@@ -26,22 +26,11 @@ class LogPoliticaPrivacidadeController {
     public async getAllPoliticaPrivacidade(req: Request, res: Response){
         try {
             const conexaoMongoService = ConexaoMongo;
-            const { id } = req.query;
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
-            if (id){
-                const documentoEncontrado = await politicaPrivacidadeCollection.findOne({ _id: new ObjectId(id as string) })
-                if (!documentoEncontrado) {
-                    res.status(404).json({message: "Nada foi encontrado."});
-                    return;
-                }
-                res.json(documentoEncontrado)
+            const todosDocumentos = await politicaPrivacidadeCollection.find({}).toArray();
+            return res.json(todosDocumentos)
             
-            } else {
-                const todosDocumentos = await politicaPrivacidadeCollection.find({}).toArray();
-                res.json(todosDocumentos)
-            }
-        
         } catch (error){
             console.error("Erro:", error);
             res.status(500).json({"message": "Erro interno do servidor."});
@@ -49,6 +38,26 @@ class LogPoliticaPrivacidadeController {
         } finally {
             await ConexaoMongo.desconectar()
     }};
+
+    public async getPoliticaPrivacidade(req: Request, res: Response){
+        try{
+            const conexaoMongoService = ConexaoMongo;
+            const { id } = req.query;
+            await conexaoMongoService.conectar();
+            const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
+            const documentoEncontrado = await politicaPrivacidadeCollection.findOne(id ? { _id: new ObjectId(id as string)} : {})
+            if (!documentoEncontrado) {
+                res.status(404).json({message: "Nada foi encontrado."});
+                return res.json(documentoEncontrado)
+            }
+
+        } catch (error){
+            res.status(500).json({"message":"Erro interno do servidor"})
+
+        } finally {
+            await ConexaoMongo.desconectar()
+        }
+    };
 }
 
 export default new LogPoliticaPrivacidadeController;
