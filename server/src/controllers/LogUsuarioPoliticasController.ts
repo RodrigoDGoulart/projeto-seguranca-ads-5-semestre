@@ -2,6 +2,7 @@
 
 import { Request, Response } from 'express';
 import LogUsuarioPoliticas from '../models/LogUsuarioPoliticas';
+import ConexaoMongo from '../models/ConexaoMongo';
 
 class LogUsuarioPoliticasController {
     public async new(req: Request, res: Response) {
@@ -20,6 +21,24 @@ class LogUsuarioPoliticasController {
             res.status(500).json({ message: 'Erro ao salvar os Logs das Políticas aceitas pelo Usuario.' });
         }
     }
+
+    public async get(req: Request, res: Response){
+        try {
+            const conexaoMongoService = ConexaoMongo;
+            await conexaoMongoService.conectar();
+            const usuarioPoliticaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
+            const todosUsers = await usuarioPoliticaPrivacidadeCollection.find({}).toArray();
+            return res.json(todosUsers)
+            
+        } catch (error){
+            console.error("Erro:", error);
+            res.status(500).json({"message": "Erro interno do servidor."});
+        
+        } finally {
+            await ConexaoMongo.desconectar()
+    }};
+
+
 }
 
 export default new LogUsuarioPoliticasController;

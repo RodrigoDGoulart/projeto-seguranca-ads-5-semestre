@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import ConexaoMongo from "./ConexaoMongo";
 
 class LogPoliticaPrivacidade {
-    constructor(public titulo: string, public data: Date, public id_politica_privacidade:string, public id?: ObjectId) {}
+    constructor(public titulo: string, public data: Date, public politica_privacidade:string, public id?: ObjectId) {}
 
     async salvarLogPoliticaPrivacidade(): Promise<ObjectId> {
         const conexaoMongoService = ConexaoMongo;
@@ -14,7 +14,7 @@ class LogPoliticaPrivacidade {
             const termosCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
 
             // Criar novos logs de politica_privacidade
-            const result = await termosCollection.insertOne({ titulo: this.titulo, data: this.data, id_politica_privacidade: this.id_politica_privacidade });
+            const result = await termosCollection.insertOne({ titulo: this.titulo, data: this.data, politica_privacidade: this.politica_privacidade });
 
             console.log("Inseriu log_politica_privacidade");
 

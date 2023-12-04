@@ -8,15 +8,15 @@ import { ObjectId } from "mongodb";
 class LogPoliticaPrivacidadeController {
     public async new(req: Request, res: Response) {
         try {
-            const { titulo, data, id_politica_privacidade } = req.body;
+            const { titulo, data, politica_privacidade } = req.body;
 
             // Crie uma instância de LogPoliticaPrivacidade com os dados recebidos
-            const logPoliticaPrivacidade = new LogPoliticaPrivacidade(titulo, new Date(data), id_politica_privacidade);
+            const logPoliticaPrivacidade = new LogPoliticaPrivacidade(titulo, new Date(data), politica_privacidade);
 
             // Salve os logs de política de privacidade e obtenha o _id
             const idPoliticaPrivacidade = await logPoliticaPrivacidade.salvarLogPoliticaPrivacidade();
 
-            res.status(200).json({ message: 'Log de Política de Privacidade salvo com sucesso.', id_politica_privacidade: idPoliticaPrivacidade });
+            res.status(200).json({ message: 'Log de Política de Privacidade salvo com sucesso.', politica_privacidade: idPoliticaPrivacidade });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Erro ao salvar o Log da Política de Privacidade.' });
@@ -46,16 +46,17 @@ class LogPoliticaPrivacidadeController {
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
             const documentoEncontrado = await politicaPrivacidadeCollection.findOne(id ? { _id: new ObjectId(id as string)} : {})
+            console.log(documentoEncontrado)
+
             if (!documentoEncontrado) {
+                console.log('nao tem nada aqui')
                 res.status(404).json({message: "Nada foi encontrado."});
-                return res.json(documentoEncontrado)
             }
-
+            return res.json(documentoEncontrado)
+            
         } catch (error){
-            res.status(500).json({"message":"Erro interno do servidor"})
+            return res.status(500).json({"message":"Erro interno do servidor"})
 
-        } finally {
-            await ConexaoMongo.desconectar()
         }
     };
 }
