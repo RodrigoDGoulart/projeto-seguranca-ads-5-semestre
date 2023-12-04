@@ -1,5 +1,5 @@
-import api from "./api";
-import { Usuario as UsuarioType, UsuarioContext } from '../types/usuario';
+import { Usuario as UsuarioType, UsuarioContext, UsuarioItem as UsuarioItemType } from '../types/usuario';
+import api from './api';
 
 interface NewUsuarioForm {
   nome: string;
@@ -18,8 +18,8 @@ class Usuario {
     console.log(usuario);
   };
 
-  async getUsuarios(): Promise<UsuarioType[]> {
-    const { data } = await api.get('/usuario');
+  async getUsuarios(): Promise<UsuarioItemType[]> {
+    const { data } = await api.request.get('/usuario');
     return data.usuarios as UsuarioType[];
   }
 

@@ -5,11 +5,18 @@ interface Usuario {
   descricao: string;
 };
 
+interface UsuarioItem {
+  id: number;
+  nome: string;
+  email: string;
+}
+
 interface UsuarioContext extends Usuario {
   acceptedTerms: string
 }
 
 export type {
   Usuario,
-  UsuarioContext
+  UsuarioContext,
+  UsuarioItem
 }

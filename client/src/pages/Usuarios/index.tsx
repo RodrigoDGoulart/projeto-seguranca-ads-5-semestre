@@ -1,32 +1,45 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import {
+  Link,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { Usuario } from "../../types/usuario";
+import { UsuarioItem } from "../../types/usuario";
 import UsuarioAPI from "../../services/Usuario";
 
-import './index.css';
+import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Usuarios() {
-  const [filtroNome, setFiltroNome] = useState('');
-  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const nav = useNavigate();
+
+  const [filtroNome, setFiltroNome] = useState("");
+  const [usuarios, setUsuarios] = useState<UsuarioItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   const filtrarNome = (titulo: string) => {
-    const regex = new RegExp(filtroNome, 'i');
+    const regex = new RegExp(filtroNome, "i");
     return regex.test(titulo);
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
     UsuarioAPI.getUsuarios()
-      .then(resp => {
-        setUsuarios(resp.filter(user => filtrarNome(user.nome)));
+      .then((resp) => {
+        setUsuarios(resp.filter((user) => filtrarNome(user.nome)));
         setLoading(false);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         setLoading(false);
       });
-  }, [filtroNome])
+  }, [filtroNome]);
 
   return (
     <div className="usuarios-container">
@@ -38,35 +51,42 @@ export default function Usuarios() {
           label="Usuário"
           variant="standard"
           value={filtroNome}
-          onChange={e => setFiltroNome(e.target.value)}
+          onChange={(e) => setFiltroNome(e.target.value)}
         />
       </div>
-      {!loading ?
+      {!loading ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell><b>Nome</b></TableCell>
-                <TableCell align="right"><b>E-mail</b></TableCell>
+                <TableCell>
+                  <b>Nome</b>
+                </TableCell>
+                <TableCell align="right">
+                  <b>E-mail</b>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {usuarios.map((user) => (
                 <TableRow
                   key={user.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {user.nome}
+                    <Link component="button" onClick={() => nav(`/perfil/${user.id}`)}>
+                      {user.nome}
+                    </Link>
                   </TableCell>
-                  <TableCell align="right">
-                    {user.email}
-                  </TableCell>
+                  <TableCell align="right">{user.email}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </TableContainer> : <p className="usuarios-carregando">Carregando...</p>}
+        </TableContainer>
+      ) : (
+        <p className="usuarios-carregando">Carregando...</p>
+      )}
     </div>
   );
 }
