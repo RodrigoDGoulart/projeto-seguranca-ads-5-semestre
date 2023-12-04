@@ -46,10 +46,8 @@ class LogPoliticaPrivacidadeController {
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
             const documentoEncontrado = await politicaPrivacidadeCollection.findOne(id ? { _id: new ObjectId(id as string)} : {})
-            console.log(documentoEncontrado)
 
             if (!documentoEncontrado) {
-                console.log('nao tem nada aqui')
                 res.status(404).json({message: "Nada foi encontrado."});
             }
             return res.json(documentoEncontrado)
