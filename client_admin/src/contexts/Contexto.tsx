@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import api from "../services/api";
 
 interface ContextProps {
   token: string;
@@ -15,6 +16,7 @@ function ContextoProvider({ children }: any) {
       const token = sessionStorage.getItem('token');
       if (token) {
         setToken(token);
+        api.setToken(token);
       }
     }
   }, [token]);

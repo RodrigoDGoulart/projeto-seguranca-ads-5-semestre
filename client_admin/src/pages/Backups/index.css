@@ -17,3 +17,8 @@
 .backups-loading {
   text-align: center;
 }
+
+.backups-info {
+  text-align: center;
+  margin: 24px 18px;
+}

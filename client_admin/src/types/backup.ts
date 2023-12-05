@@ -1,7 +1,11 @@
 interface Backup {
-  id: string;
-  title: string;
-  data: string;
+  backup: {
+    id: number;
+    backup_date: string;
+  }
+  usuariosExcluidos: number;
+  usuarios_criados: number;
+  usuarios_editados: number;
 }
 
 export type {
