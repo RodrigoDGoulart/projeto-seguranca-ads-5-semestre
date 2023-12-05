@@ -1,69 +1,26 @@
 import { PoliticaItem as PoliticaItemType, Politica as PoliticaType } from "../types/politica";
 import { UsuarioLog } from "../types/usuario";
+import api from "./api";
 
 class Politica {
-  async getPoliticas(): Promise<PoliticaItemType[]> {
-    const politicas: PoliticaItemType[] = [
-      {
-        data: new Date().toISOString(), 
-        id: '123', 
-        titulo: 'Lorem ipsum'
-      },
-      {
-        data: new Date().toISOString(), 
-        id: '456', 
-        titulo: 'Lorem ipsum 2'
-      },
-      {
-        data: new Date().toISOString(), 
-        id: '789', 
-        titulo: 'Lorem ipsum 3'
-      },
-      {
-        data: new Date().toISOString(), 
-        id: '112233', 
-        titulo: 'Lorem ipsum 4'
-      },
-    ]
-    return politicas;
+  async getPoliticas(): Promise<PoliticaType[]> {
+    const { data } = await api.request.get('/policies');
+    console.log(data)
+    return data;
   }
 
   async getPolitica(id: string): Promise<PoliticaType> {
-    console.log('service', id)
-    const politica: PoliticaType = {
-      data: new Date().toISOString(), 
-      id: '123', 
-      titulo: 'Lorem ipsum',
-      texto: `
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
-      `
-    }
-    return politica;
+    const { data } = await api.request.get(`/policies?id=${id}`);
+    return data;
   }
 
   async getLastPolitica(): Promise<PoliticaType> {
     console.log('service las politica')
     const politica: PoliticaType = {
       data: new Date().toISOString(), 
-      id: '123', 
+      _id: '123', 
       titulo: 'Lorem ipsum',
-      texto: `
+      politica_privacidade: `
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed viverra erat. Fusce tincidunt metus id lectus aliquet, ut molestie erat congue. Ut sed ante et nibh porta accumsan. Donec quis sem ac sem volutpat vestibulum eu a nunc. Nulla at turpis ultrices enim condimentum pellentesque faucibus sit amet justo. Ut pretium diam a justo viverra, sed lacinia sem porta. Nunc quis elementum tellus, sit amet semper orci. Aliquam sed metus quis est efficitur sollicitudin. Morbi fermentum pellentesque diam faucibus pretium. Aliquam id dui et dui mollis ultrices et eu turpis. Mauris eleifend enim id mi ornare, a feugiat tellus posuere.

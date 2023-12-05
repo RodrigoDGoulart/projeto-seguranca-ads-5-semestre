@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Paper } from '@mui/material';
 import { DataGrid, GridColDef, GridRowId } from '@mui/x-data-grid';
 
-import { PoliticaItem as PoliticaItemType, Politica as PoliticaType } from '../../types/politica';
+import { Politica as PoliticaType } from '../../types/politica';
 import Politica from '../../services/Politica';
 
 import './index.css';
@@ -19,23 +19,13 @@ const columns: GridColDef[] = [
 export default function Policies() {
   const nav = useNavigate();
 
-  const [lista, setLista] = useState<PoliticaItemType[]>([]);
+  const [lista, setLista] = useState<PoliticaType[]>([]);
   const [policy, setPolicy] = useState<PoliticaType>();
   const [policyID, setPolicyID] = useState('');
 
   const clearPolicy = () => {
     setPolicy(undefined);
     setPolicyID('');
-  }
-
-  const getPolicy = async (id: string) => {
-    setPolicyID(id);
-    try {
-      const res = await Politica.getPolitica(id);
-      setPolicy(res);
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   const updatePolicy = () => {
@@ -67,11 +57,12 @@ export default function Policies() {
             hideFooterSelectedRowCount
             rows={lista.map(item => ({
               ...item,
-              data: new Date(item.data).toLocaleDateString('pt-BR')
+              data: new Date(item.data).toLocaleDateString('pt-BR'),
+              id: item._id,
             }))}
             columns={columns}
             onRowSelectionModelChange={e => {
-              getPolicy(e[0] as string);
+              setPolicy(lista.find(item => item._id === e[0]))
             }}
             rowSelectionModel={policyID ? [policyID] : [] as GridRowId[]}
             rowSelection
@@ -93,11 +84,11 @@ export default function Policies() {
               <h1>
                 {policy.titulo}
               </h1>
-              <h4>ID:{` ${policy.id}`}</h4>
+              <h4>ID:{` ${policy._id}`}</h4>
               <div>
                 <h4>Conteúdo:</h4>
                 <div className='policies-info-content'>
-                  {policy.texto}
+                  {policy.politica_privacidade}
                 </div>
               </div>
             </div>

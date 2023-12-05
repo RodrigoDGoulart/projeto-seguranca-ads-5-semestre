@@ -30,7 +30,7 @@ export default function UpdatePolicies() {
   useEffect(() => {
     Politica.getLastPolitica()
       .then(res => {
-        setTexto(res.texto);
+        setTexto(res.politica_privacidade);
       })
       .catch(e => console.log(e));
   }, [])

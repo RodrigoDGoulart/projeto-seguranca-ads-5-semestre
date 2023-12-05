@@ -1,12 +1,12 @@
 interface PoliticaItem {
-  id: string;
+  _id: string;
   titulo: string;
   data: string;
 }
 interface Politica {
-  id: string;
+  _id: string;
   titulo: string;
-  texto: string;
+  politica_privacidade: string;
   data: string;
 }
 
