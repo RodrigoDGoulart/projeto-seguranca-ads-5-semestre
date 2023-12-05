@@ -114,11 +114,13 @@ class BackupController {
       const usuariosExcluidos = await usuariosExcluidos_collection.find().toArray();
 
       // excluir usuarios no banco
-      await AppDataSource.createQueryBuilder()
-        .delete()
-        .from(Usuario)
-        .where("id IN (:...ids)", { ids: usuariosExcluidos.map(item => item.id_usuario) })
-        .execute();
+      if (usuariosExcluidos.length) {
+        await AppDataSource.createQueryBuilder()
+          .delete()
+          .from(Usuario)
+          .where("id IN (:...ids)", { ids: usuariosExcluidos.map(item => item.id_usuario) })
+          .execute();
+      }
     } catch (e) {
       return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
     } finally {
