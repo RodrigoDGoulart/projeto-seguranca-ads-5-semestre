@@ -15,8 +15,15 @@ interface UsuarioUpdateForm {
 }
 
 class Usuario {
-  async criar(usuario: NewUsuarioForm) {
-    console.log(usuario);
+  async criar(usuario: NewUsuarioForm): Promise<UsuarioContext | ErrorResponse> {
+    const resp = api.request.post('/usuario', usuario)
+      .then(res => {
+        return res.data;
+      })
+      .catch(e => {
+        return e.response.data;
+      });
+    return resp;
   };
 
   async getUsuarios(): Promise<UsuarioItemType[]> {

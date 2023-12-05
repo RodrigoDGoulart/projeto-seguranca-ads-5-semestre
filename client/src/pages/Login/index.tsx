@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useContexto } from "../../hooks/useContexto";
 
 import "./index.css";
+import api from "../../services/api";
 
 export default function Login() {
   const nav = useNavigate();
@@ -31,6 +32,7 @@ export default function Login() {
       }
     } else {
       setUsuario(retorno);
+      api.setToken(retorno.token);
       sessionStorage.setItem('usuario', JSON.stringify(retorno));
       nav(`/usuarios`);
     }
