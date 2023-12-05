@@ -4,9 +4,9 @@ import Usuario from "../../services/Usuario";
 import { Button } from "@mui/material";
 import { Usuario as UsuarioType } from "../../types/usuario";
 import { useContexto } from "../../hooks/useContexto";
+import DeleteAccountModal from "../../components/DeleteAccountModal";
 
 import './index.css';
-import DeleteAccountModal from "../../components/DeleteAccountModal";
 
 export default function Perfil() {
   const { id } = useParams();
@@ -26,10 +26,10 @@ export default function Perfil() {
 
   useEffect(() => {
     setLoading(true);
-    if (!isNaN(Number(id))) {
-      if (Number(id) === usuario?.usuario.id) {
+    if (!isNaN(Number(id)) || id === 'meu-perfil') {
+      if (id === 'meu-perfil') {
         setOwnUser(true);
-        setUsuarioSelected(usuario.usuario);
+        setUsuarioSelected(usuario?.usuario);
       } else {
         Usuario.getUsuario(Number(id)).then(res => {
           setUsuarioSelected(res);
