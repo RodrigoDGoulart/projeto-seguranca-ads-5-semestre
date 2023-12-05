@@ -52,8 +52,15 @@ class Usuario {
     console.log('exlcuindo ', id);
   }
 
-  async update(id: number, usuario: UsuarioUpdateForm) {
-    console.log('foi');
+  async update(usuario: UsuarioUpdateForm) {
+    const resp = api.request.put('/usuario', usuario)
+      .then(res => {
+        return res.data;
+      })
+      .catch(e => {
+        return e.response.data;
+      });
+    return resp;
   }
 
   async agreeNewTerms(id: number) {

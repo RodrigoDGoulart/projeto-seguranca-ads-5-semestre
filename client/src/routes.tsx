@@ -14,7 +14,7 @@ export default function AppRoutes() {
         <Route path='/usuarios' element={<TermVerifier page={<Header element={<Usuarios />} />} />} />
         <Route path='/cadastro' element={<TermVerifier page={<Header element={<UsuarioForm />} />} />} />
         <Route path='/perfil/:id' element={<TermVerifier page={<Header element={<Perfil />} />} />} />
-        <Route path='/editar/:id' element={<TermVerifier page={<Header element={<UsuarioForm />} />} />} />
+        <Route path='/editar-dados' element={<TermVerifier page={<Header element={<UsuarioForm />} />} />} />
       </Routes>
     </BrowserRouter>
   );

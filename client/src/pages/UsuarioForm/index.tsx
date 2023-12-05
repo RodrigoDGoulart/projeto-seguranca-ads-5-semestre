@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Usuario from "../../services/Usuario";
 
 import "./index.css";
@@ -16,6 +16,7 @@ import { useContexto } from "../../hooks/useContexto";
 import { Termo } from "../../types/termo";
 import Termos from "../../services/Termos";
 import api from "../../services/api";
+import { UsuarioContext } from "../../types/usuario";
 
 const styleModal = {
   position: "absolute" as "absolute",
@@ -30,8 +31,8 @@ const styleModal = {
 
 export default function UsuarioForm() {
   const { usuario, setUsuario } = useContexto();
-  const { id } = useParams();
   const nav = useNavigate();
+  const location = useLocation();
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -41,17 +42,27 @@ export default function UsuarioForm() {
 
   const [termos, setTermos] = useState<Termo>();
 
-  const [error, setError] = useState(false);
-  const [unauth, setUnauth] = useState(false);
   const [politicasModal, setPoliticasModal] = useState(false);
 
   const [emailError, setEmailError] = useState(false);
   const [serverError, setServerError] = useState(false);
 
+  const [isUpdateForm, setIsUpdateForm] = useState(false);
+
   const submit = async () => {
-    if (id) {
-      await Usuario.update(Number(id), { nome, email, descricao });
-      nav(`/perfil/${id}`);
+    if (isUpdateForm) {
+      const retorno = await Usuario.update({ nome, email, descricao });
+      if ('errorCode' in retorno) {
+        if (retorno.errorCode === '400-already-email') {
+          setEmailError(true);
+        } else {
+          setServerError(true);
+        }
+      } else {
+        const novoUsuario = { ...usuario, usuario: {...usuario?.usuario, nome, email, senha}}
+        setUsuario(novoUsuario as UsuarioContext);
+        nav(`/perfil/meu-perfil`);
+      }
     } else {
       const resp = await Usuario.criar({ nome, email, senha, descricao });
       if ("usuario" in resp) {
@@ -70,46 +81,25 @@ export default function UsuarioForm() {
   };
 
   useEffect(() => {
-    if (id) {
-      if (!isNaN(Number(id))) {
-        console.log(id, usuario);
-        if (Number(id) !== usuario?.usuario.id) {
-          setUnauth(true);
-        } else {
-          Usuario.getUsuario(Number(id))
-            .then((res) => {
-              setNome(res.nome);
-              setEmail(res.email);
-              setDescricao(res.descricao);
-            })
-            .catch((e) => console.log(e));
-        }
-      } else {
-        setError(true);
-      }
+    if (location.pathname === '/editar-dados') {
+      setNome(usuario?.usuario.nome as string);
+      setEmail(usuario?.usuario.email as string);
+      setDescricao(usuario?.usuario.descricao as string);
+      setIsUpdateForm(true);
+      setPoliticasCheck(true);
+    } else {
+      setIsUpdateForm(false);
+      setPoliticasCheck(false);
     }
     Termos.getLastTerm().then((res) => setTermos(res));
-  }, [id, usuario]);
+  }, [location, usuario]);
 
   return (
     <>
       <div>
-        <Button
-          variant="text"
-          className="novousuario-voltar"
-          onClick={() => nav(-1)}
-        >
-          Voltar
-        </Button>
-        {unauth && (
-          <p className="novousuario-error">
-            Você não tem permissão para editar outro usuário.
-          </p>
-        )}
-        {!error && !unauth && (
           <>
             <h1 className="novousuario-title">
-              {!id ? "Cadastro" : "Editar dados"}
+              {!isUpdateForm ? "Cadastro" : "Editar dados"}
             </h1>
             {serverError && (
               <p className="novousuario-error">
@@ -144,7 +134,7 @@ export default function UsuarioForm() {
                 error={emailError}
                 helperText={emailError ? "Este email já existe" : ""}
               />
-              {!id && (
+              {!isUpdateForm && (
                 <TextField
                   className="novousuario-input"
                   id="senha"
@@ -167,7 +157,7 @@ export default function UsuarioForm() {
                 multiline={true}
                 rows={25}
               />
-              {!id && (
+              {!isUpdateForm && (
                 <div className="novousuario-checkbox">
                   <Checkbox
                     checked={politicasCheck}
@@ -187,14 +177,10 @@ export default function UsuarioForm() {
                 type="submit"
                 disabled={!politicasCheck}
               >
-                {id ? "Editar dados" : "Criar usuário"}
+                {isUpdateForm ? "Editar dados" : "Criar usuário"}
               </Button>
             </form>
           </>
-        )}{" "}
-        {error && !unauth && (
-          <p className="novousuario-error">ID de usuário inválido</p>
-        )}
       </div>
       <Modal
         open={politicasModal}

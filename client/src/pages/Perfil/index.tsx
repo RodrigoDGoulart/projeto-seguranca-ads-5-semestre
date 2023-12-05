@@ -21,7 +21,7 @@ export default function Perfil() {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const editar = () => {
-    nav(`/editar/${usuario?.usuario.id}`);
+    nav(`/editar-dados`);
   }
 
   useEffect(() => {
@@ -43,7 +43,6 @@ export default function Perfil() {
   }, [id, usuario]);
   return (
     <>
-      <Button variant="text" className="novousuario-voltar" onClick={() => nav(-1)}>Voltar</Button>
       <DeleteAccountModal 
         open={deleteModal} 
         onClose={() => setDeleteModal(false)}
