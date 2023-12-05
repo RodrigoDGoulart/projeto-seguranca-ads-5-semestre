@@ -5,12 +5,12 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import { useContexto } from "../../hooks/useContexto";
 
 import Termos from "../../services/Termos";
-import Usuario from "../../services/Usuario";
 
 import { Politica } from "../../types/termo";
 
 import './index.css';
 import DeleteAccountModal from "../DeleteAccountModal";
+import { UsuarioContext } from "../../types/usuario";
 
 interface Props {
   page: React.ReactElement;
@@ -29,21 +29,23 @@ const styleModal = {
 
 export default function TermVerifier({ page }: Props) {
   const location = useLocation();
-  const { usuario } = useContexto();
+  const { usuario, setUsuario } = useContexto();
 
   const [newTermsModal, setNewTermsModal] = useState(false);
   const [termos, setTermos] = useState<Politica>();
   const [deleteModal, setDeleteModal] = useState(false);
 
   const agree = async () => {
-    await Usuario.agreeNewTerms(usuario?.usuario.id as number);
+    await Termos.agreeNewTerms(usuario?.usuario.id as number);
+    const novoUsuario = {...usuario, usuario: {...usuario?.usuario, acceptedTerms: termos?._id}} as UsuarioContext;
+    setUsuario(novoUsuario);
     setNewTermsModal(false);
   }
 
   useEffect(() => {
     const getTerms = async () => {
       const lastTerms = await Termos.getLastTerm();
-      if (usuario && usuario.usuario.acceptedTerms !== lastTerms._id) {
+      if (usuario && usuario.usuario.acceptedTerms && usuario.usuario.acceptedTerms !== lastTerms._id) {
         setNewTermsModal(true);
         setTermos(lastTerms);
       }

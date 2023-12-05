@@ -31,6 +31,7 @@ export default function Login() {
           setServerError(true);
       }
     } else {
+      console.log(retorno);
       setUsuario(retorno);
       api.setToken(retorno.token);
       sessionStorage.setItem('usuario', JSON.stringify(retorno));
