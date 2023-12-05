@@ -7,7 +7,7 @@ import { useContexto } from "../../hooks/useContexto";
 import Termos from "../../services/Termos";
 import Usuario from "../../services/Usuario";
 
-import { Politica, Termo } from "../../types/termo";
+import { Politica } from "../../types/termo";
 
 import './index.css';
 import DeleteAccountModal from "../DeleteAccountModal";

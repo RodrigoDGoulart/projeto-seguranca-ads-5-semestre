@@ -13,6 +13,7 @@ interface UsuarioLog {
   id_usuario: string;
   nome_usuario: string;
   data: string;
+  id_politica_privacidade: string;
 }
 
 export type {

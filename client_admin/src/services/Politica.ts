@@ -31,13 +31,8 @@ class Politica {
   }
 
   async getUsuarioLog (): Promise<UsuarioLog[]> {
-    const lista:UsuarioLog[] = [
-      {id_usuario: '123', data: new Date().toISOString(), nome_usuario: 'Fulano1'},
-      {id_usuario: '123456', data: new Date().toISOString(), nome_usuario: 'Fulano2'},
-      {id_usuario: '123789', data: new Date().toISOString(), nome_usuario: 'Fulano3'},
-      {id_usuario: '123123', data: new Date().toISOString(), nome_usuario: 'Fulano4'},
-    ]
-    return lista;
+    const { data } = await api.request.get('/policies/user');
+    return data;
   }
 }
 

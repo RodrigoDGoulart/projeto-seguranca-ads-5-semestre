@@ -9,6 +9,7 @@ import './index.css';
 const columns: GridColDef[] = [
   { field: 'id_usuario', headerName: 'ID do Usuário' },
   { field: 'nome_usuario', headerName: 'Nome do Usuário', flex: 1 },
+  { field: 'id_politica_privacidade', headerName: 'ID Política Privacidade', flex: 1 },
   { field: 'data', headerName: 'Data' },
 ]
 

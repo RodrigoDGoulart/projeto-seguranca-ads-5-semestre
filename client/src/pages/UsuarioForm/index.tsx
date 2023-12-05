@@ -13,7 +13,7 @@ import Usuario from "../../services/Usuario";
 
 import "./index.css";
 import { useContexto } from "../../hooks/useContexto";
-import { Politica, Termo } from "../../types/termo";
+import { Politica } from "../../types/termo";
 import Termos from "../../services/Termos";
 import api from "../../services/api";
 import { UsuarioContext } from "../../types/usuario";
