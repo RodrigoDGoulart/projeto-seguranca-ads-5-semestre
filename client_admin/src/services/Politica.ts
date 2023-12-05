@@ -1,4 +1,4 @@
-import { PoliticaItem as PoliticaItemType, Politica as PoliticaType } from "../types/politica";
+import { Politica as PoliticaType } from "../types/politica";
 import { UsuarioLog } from "../types/usuario";
 import api from "./api";
 

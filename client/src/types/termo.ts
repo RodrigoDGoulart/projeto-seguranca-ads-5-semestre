@@ -4,6 +4,14 @@ interface Termo {
   data: string;
 }
 
+interface Politica {
+  _id: string;
+  titulo: string;
+  politica_privacidade: string;
+  data: string;
+}
+
 export type {
   Termo,
+  Politica
 }

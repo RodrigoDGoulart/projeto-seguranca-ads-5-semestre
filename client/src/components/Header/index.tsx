@@ -16,7 +16,7 @@ const links: { label: string; url: string }[] = [
 ];
 
 export default function Header({ element }: Props) {
-  const {setUsuario} = useContexto();
+  const {setUsuario, usuario} = useContexto();
   const nav = useNavigate();
 
   const sair = () => {
@@ -28,7 +28,7 @@ export default function Header({ element }: Props) {
 
   return (
     <>
-      <div className="header-container">
+      {usuario && <div className="header-container">
         <div className="header-btns">
           {links.map((item) => (
             <Button
@@ -48,7 +48,7 @@ export default function Header({ element }: Props) {
               Sair
             </Button>
         </div>
-      </div>
+      </div>}
       {element}
     </>
   );

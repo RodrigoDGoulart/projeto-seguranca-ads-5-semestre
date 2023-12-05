@@ -13,7 +13,7 @@ import Usuario from "../../services/Usuario";
 
 import "./index.css";
 import { useContexto } from "../../hooks/useContexto";
-import { Termo } from "../../types/termo";
+import { Politica, Termo } from "../../types/termo";
 import Termos from "../../services/Termos";
 import api from "../../services/api";
 import { UsuarioContext } from "../../types/usuario";
@@ -40,7 +40,7 @@ export default function UsuarioForm() {
   const [descricao, setDescricao] = useState("");
   const [politicasCheck, setPoliticasCheck] = useState(false);
 
-  const [termos, setTermos] = useState<Termo>();
+  const [termos, setTermos] = useState<Politica>();
 
   const [politicasModal, setPoliticasModal] = useState(false);
 
@@ -201,7 +201,7 @@ export default function UsuarioForm() {
             Atualizado em
             {` ${new Date(termos?.data as string).toLocaleDateString("pt-BR")}`}
           </Typography>
-          <div className="novousuario-modal-texto">{termos?.termo}</div>
+          <div className="novousuario-modal-texto">{termos?.politica_privacidade}</div>
         </Box>
       </Modal>
     </>

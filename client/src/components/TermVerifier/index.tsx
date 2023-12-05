@@ -7,7 +7,7 @@ import { useContexto } from "../../hooks/useContexto";
 import Termos from "../../services/Termos";
 import Usuario from "../../services/Usuario";
 
-import { Termo } from "../../types/termo";
+import { Politica, Termo } from "../../types/termo";
 
 import './index.css';
 import DeleteAccountModal from "../DeleteAccountModal";
@@ -32,7 +32,7 @@ export default function TermVerifier({ page }: Props) {
   const { usuario } = useContexto();
 
   const [newTermsModal, setNewTermsModal] = useState(false);
-  const [termos, setTermos] = useState<Termo>();
+  const [termos, setTermos] = useState<Politica>();
   const [deleteModal, setDeleteModal] = useState(false);
 
   const agree = async () => {
@@ -43,7 +43,7 @@ export default function TermVerifier({ page }: Props) {
   useEffect(() => {
     const getTerms = async () => {
       const lastTerms = await Termos.getLastTerm();
-      if (usuario && usuario.usuario.acceptedTerms !== lastTerms.id) {
+      if (usuario && usuario.usuario.acceptedTerms !== lastTerms._id) {
         setNewTermsModal(true);
         setTermos(lastTerms);
       }
@@ -78,7 +78,7 @@ export default function TermVerifier({ page }: Props) {
               Atualizado em{` ${new Date(termos?.data as string).toLocaleDateString('pt-BR')}`}
             </Typography>
             <div className="novousuario-modal-texto">
-              {termos?.termo}
+              {termos?.politica_privacidade}
             </div>
             <div className="termverifier-btns">
               <Button 
