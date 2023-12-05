@@ -1,8 +1,17 @@
+import { ErrorResponse } from "react-router-dom";
+import api from "./api";
+
 class Admin {
-  async auth(auth: {user: string, senha: string}) {
-    const token = '3213iuy123iuy'
-    sessionStorage.setItem('token', token);
-    return {token}
+  async auth(auth: {usuario: string, senha: string}): Promise<{token: string} | ErrorResponse> {
+    const retorno = api.request.post('/auth', auth)
+      .then(res => {
+        return res.data;
+      })
+      .catch(e => {
+        return e.response.data;
+      });
+
+    return retorno;
   }
 }
 

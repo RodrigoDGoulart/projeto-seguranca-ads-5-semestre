@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { UsuarioContext } from "../types/usuario";
 
 interface ContextProps {
   token: string;

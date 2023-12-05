@@ -13,3 +13,7 @@
     width: 50%;
     max-width: 400px;
 }
+
+.login-error-msg {
+    color: red;
+}
