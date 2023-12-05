@@ -22,3 +22,8 @@
   text-align: center;
   margin: 24px 18px;
 }
+
+.backups-warning {
+  display: flex;
+  justify-content: center;
+}

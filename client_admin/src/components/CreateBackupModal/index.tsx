@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Modal, Box, Typography, Button, TextField } from "@mui/material";
+import { Modal, Box, Typography, Button } from "@mui/material";
 import Backup from "../../services/Backup";
 
 import './index.css';
@@ -22,10 +21,8 @@ const styleModal = {
 };
 
 export default function CreateBackupModal(props: Props) {
-  const [title, setTitle] = useState('');
-
-  const createBackup = () => {
-    Backup.createBackup(title);
+  const createBackup = async () => {
+    await Backup.createBackup();
     props.afterCreate && props.afterCreate();
   }
 
@@ -47,14 +44,7 @@ export default function CreateBackupModal(props: Props) {
             Criar novo backup?
           </Typography>
           <div className="createbackup-btn">
-            <TextField
-              id="backup-titulo"
-              label="Título"
-              variant="outlined"
-              onChange={e => setTitle(e.target.value)}
-            />
             <Button
-              disabled={!title}
               variant="contained"
               onClick={() => createBackup()}
             >

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 
 import CreateBackupModal from '../../components/CreateBackupModal';
 import ConfirmLoadModal from '../../components/ConfirmLoadBackup';
@@ -11,12 +11,15 @@ import './index.css';
 
 export default function Backups() {
   const [backup, setBackup] = useState<BackupType>();
+
   const [createModal, setCreateModal] = useState(false);
   const [loadModal, setLoadModal] = useState(false);
 
+  const [creatingBackup, setCreatingBackup] = useState(false);
+  const [restoringBackup, setRestoringBackup] = useState(false);
+
   const updateBackups = async () => {
     const resp = await Backup.getBackups();
-    console.log(resp);
     setBackup(resp);
   }
 
@@ -26,6 +29,10 @@ export default function Backups() {
   return (
     <>
       <div className='backups-container'>
+        <div className='backups-warning'>
+          {creatingBackup && <Alert severity="info">Criando novo backup... Talvez isso demore um pouco.</Alert>}
+          {restoringBackup && <Alert severity="info">Carregando último backup... Talvez isso demore um pouco.</Alert>}
+        </div>
         <h1 className='backups-title'>Backup</h1>
         <div className='backups-btn'>
           <Button 
@@ -74,14 +81,16 @@ export default function Backups() {
         open={createModal}
         afterCreate={() => {
           updateBackups();
-          setCreateModal(false)
+          setCreateModal(false);
+          setCreatingBackup(true);
         }}
       />
       <ConfirmLoadModal
         onClose={() => setLoadModal(false)}
         open={loadModal}
         afterLoad={() => {
-          setLoadModal(false)
+          setLoadModal(false);
+          setRestoringBackup(true);
         }}
       />
     </>

@@ -2,17 +2,21 @@ import { Backup as BackupType } from "../types/backup";
 import api from "./api";
 
 class Backup {
-  async getBackups():Promise<BackupType> {
+  async getBackups(): Promise<BackupType> {
     const { data } = await api.request.get('/backup');
     return data;
   }
 
-  async createBackup(title: string) {
-    console.log(title);
+  async createBackup() {
+    await api.request.post('/backup/create')
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
   }
 
   async loadBackup() {
-    console.log('load backup');
+    await api.request.post('/backup/restore')
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
   }
 }
 
