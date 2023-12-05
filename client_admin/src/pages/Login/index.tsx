@@ -5,6 +5,7 @@ import { useContexto } from "../../hooks/useContexto";
 
 import "./index.css";
 import Admin from "../../services/Admin";
+import api from "../../services/api";
 
 export default function Login() {
   const nav = useNavigate();
@@ -27,6 +28,7 @@ export default function Login() {
       }
     } else {
       const response = res as {token:string};
+      api.setToken(response.token);
       setToken(response.token)
       sessionStorage.setItem('token', response.token);
       nav(`/home`);

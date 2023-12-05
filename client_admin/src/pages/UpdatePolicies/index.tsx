@@ -18,7 +18,10 @@ export default function UpdatePolicies() {
 
   const submit = async () => {
     setLoading(true);
-    await Politica.updatePolitica(texto);
+    await Politica.updatePolitica({
+      titulo, 
+      politica_privacidade: texto,
+    });
     setLoading(false);
     setSuccess(true);
     setTimeout(() => {
@@ -66,7 +69,7 @@ export default function UpdatePolicies() {
           label="Conteúdo"
           variant="outlined"
           multiline={true}
-          rows={25}
+          rows={8}
           onChange={(e: any) => {
             setTexto(e.target.value);
           }}
