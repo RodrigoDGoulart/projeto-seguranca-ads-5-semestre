@@ -21,11 +21,11 @@ const styleModal = {
 };
 
 export default function DeleteAccountModal (props: Props) {
-  const {usuario, setUsuario} = useContexto();
+  const {setUsuario} = useContexto();
   const nav = useNavigate();
 
   const deleteAccount = async () => {
-    await Usuario.delete(usuario?.usuario.id as number);
+    await Usuario.delete();
     setUsuario(undefined);
     sessionStorage.removeItem('usuario');
     nav('/');

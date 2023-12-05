@@ -48,8 +48,8 @@ class Usuario {
     return retorno;
   }
 
-  async delete(id: number) {
-    console.log('exlcuindo ', id);
+  async delete() {
+    await api.request.delete('/usuario');
   }
 
   async update(usuario: UsuarioUpdateForm) {
