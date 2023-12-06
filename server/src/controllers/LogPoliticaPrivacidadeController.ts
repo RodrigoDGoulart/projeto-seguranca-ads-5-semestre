@@ -28,7 +28,7 @@ class LogPoliticaPrivacidadeController {
             const conexaoMongoService = ConexaoMongo;
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
-            const todosDocumentos = await politicaPrivacidadeCollection.find({}).toArray();
+            const todosDocumentos = await politicaPrivacidadeCollection.find({}).sort({ data: -1 }).limit(1).toArray();
             return res.json(todosDocumentos)
             
         } catch (error){
@@ -45,12 +45,14 @@ class LogPoliticaPrivacidadeController {
             const { id } = req.query;
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
-            const documentoEncontrado = await politicaPrivacidadeCollection.findOne(id ? { _id: new ObjectId(id as string)} : {})
+            if (!id) {
+                const documentoRecente = await politicaPrivacidadeCollection.find({}).sort({ data : -1 }).toArray();
+                return res.status(200).json(documentoRecente[0]);
 
-            if (!documentoEncontrado) {
-                res.status(404).json({message: "Nada foi encontrado."});
+            } else {
+                const documentoEncontrado = await politicaPrivacidadeCollection.findOne({ _id: new ObjectId(id as string)})
+                return res.status(200).json(documentoEncontrado)
             }
-            return res.json(documentoEncontrado)
             
         } catch (error){
             return res.status(500).json({"message":"Erro interno do servidor"})
