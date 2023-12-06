@@ -128,12 +128,13 @@ class UsuarioController {
           await conexaoMongoService.conectar();
           const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
           await termosCollection.updateMany({ id_usuario : usuario.id }, { email_usuario : email })
-
+          conexaoMongoService.desconectar()
         }
         return res.json(r);
       }
     } catch (e) {
-      return res.status(500).json({ error: 'Erro desconhecido', errorCode: '500-server-error', details: {...e}});
+      console.log(e)
+      return res.status(500).json({ error: 'Erro desconhecido', errorCode: '500-server-error', details: e.message});
     }
   }
 
