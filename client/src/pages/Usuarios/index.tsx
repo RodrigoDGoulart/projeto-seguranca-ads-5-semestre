@@ -15,9 +15,11 @@ import UsuarioAPI from "../../services/Usuario";
 
 import "./index.css";
 import { useNavigate } from "react-router-dom";
+import { useContexto } from "../../hooks/useContexto";
 
 export default function Usuarios() {
   const nav = useNavigate();
+  const {usuario} = useContexto();
 
   const [filtroNome, setFiltroNome] = useState("");
   const [usuarios, setUsuarios] = useState<UsuarioItem[]>([]);
@@ -32,14 +34,14 @@ export default function Usuarios() {
     setLoading(true);
     UsuarioAPI.getUsuarios()
       .then((resp) => {
-        setUsuarios(resp.filter((user) => filtrarNome(user.nome)));
+        setUsuarios(resp.filter((user) => filtrarNome(user.nome) && user.id !== usuario?.usuario.id));
         setLoading(false);
       })
       .catch((e) => {
         console.log(e);
         setLoading(false);
       });
-  }, [filtroNome]);
+  }, [filtroNome, usuario]);
 
   return (
     <div className="usuarios-container">

@@ -7,10 +7,9 @@ import Politica from '../../services/Politica';
 import './index.css';
 
 const columns: GridColDef[] = [
-  { field: 'id_usuario', headerName: 'ID do Usuário' },
-  { field: 'nome_usuario', headerName: 'Nome do Usuário', flex: 1 },
-  { field: 'id_politica_privacidade', headerName: 'ID Política Privacidade', flex: 1 },
-  { field: 'data', headerName: 'Data' },
+  { field: 'id_usuario', headerName: 'ID do Usuário', flex: 1 },
+  { field: 'id_politica_privacidade', headerName: 'ID Política Privacidade', flex: 2 },
+  { field: 'data', headerName: 'Data', flex: 1},
 ]
 
 export default function LogUsuario() {
@@ -34,7 +33,7 @@ export default function LogUsuario() {
           rows={lista.map((item, index) => ({
             ...item,
             id: index,
-            data: new Date(item.data).toLocaleDateString('pt-BR'),
+            data: `${new Date(item.data).toLocaleDateString('pt-BR')} às ${new Date(item.data).toLocaleTimeString('pt-BR')}`,
           }))}
           columns={columns}
         />

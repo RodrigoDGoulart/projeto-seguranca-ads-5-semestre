@@ -36,16 +36,18 @@ export default function TermVerifier({ page }: Props) {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const agree = async () => {
-    await Termos.agreeNewTerms(usuario?.usuario.id as number);
-    const novoUsuario = {...usuario, usuario: {...usuario?.usuario, acceptedTerms: termos?._id}} as UsuarioContext;
+    await Termos.agreeNewTerms(usuario?.usuario.id as number, termos?._id as string);
+    const novoUsuario = {...usuario, usuario: {...usuario?.usuario, id_politica_privacidade: termos?._id}} as UsuarioContext;
     setUsuario(novoUsuario);
     setNewTermsModal(false);
+    sessionStorage.setItem('usuario', JSON.stringify(novoUsuario));
   }
 
   useEffect(() => {
     const getTerms = async () => {
       const lastTerms = await Termos.getLastTerm();
-      if (usuario && usuario.usuario.acceptedTerms && usuario.usuario.acceptedTerms !== lastTerms._id) {
+      console.log(lastTerms, usuario?.usuario)
+      if (usuario && usuario.usuario.id_politica_privacidade && usuario.usuario.id_politica_privacidade !== lastTerms._id) {
         setNewTermsModal(true);
         setTermos(lastTerms);
       }
@@ -74,7 +76,7 @@ export default function TermVerifier({ page }: Props) {
               component="h1" 
               align="center"
             >
-              Políticas de Privacidade
+              Novas Políticas de Privacidade
             </Typography>
             <Typography id="modal-modal-title" component="h1" align="center">
               Atualizado em{` ${new Date(termos?.data as string).toLocaleDateString('pt-BR')}`}
@@ -87,14 +89,14 @@ export default function TermVerifier({ page }: Props) {
                 variant="contained" 
                 onClick={() => agree()}
               >
-                Concordo com os novos termos
+                Concordo com as novas políticas
               </Button>
               <Button 
                 variant="outlined" 
                 color="error" 
                 onClick={() => setDeleteModal(true)}
               >
-                Não concordo com os novos termos, excluir minha conta
+                Não concordo com as novas políticas, desejo excluir minha conta
               </Button>
             </div>
           </div>

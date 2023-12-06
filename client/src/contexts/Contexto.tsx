@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { UsuarioContext } from "../types/usuario";
+import api from "../services/api";
 
 interface ContextProps {
   usuario: UsuarioContext | undefined;
@@ -14,7 +15,11 @@ function ContextoProvider({ children }: any) {
   useEffect(() => {
     if (!usuario) {
       const usuarioJSON = sessionStorage.getItem('usuario');
-      setUsuario(JSON.parse(usuarioJSON as string));
+      if (usuarioJSON) {
+        const usuarioObj = JSON.parse(usuarioJSON as string) as UsuarioContext;
+        setUsuario(usuarioObj);
+        api.setToken(usuarioObj.token);
+      }
     }
   }, [usuario]);
   return(

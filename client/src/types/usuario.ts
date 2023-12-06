@@ -12,7 +12,7 @@ interface UsuarioItem {
 }
 
 interface UsuarioInfoContext extends Usuario {
-  acceptedTerms: string;
+  id_politica_privacidade: string;
 }
 
 interface UsuarioContext {

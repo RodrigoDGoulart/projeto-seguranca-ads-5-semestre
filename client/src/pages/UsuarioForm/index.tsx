@@ -52,6 +52,7 @@ export default function UsuarioForm() {
   const submit = async () => {
     if (isUpdateForm) {
       const retorno = await Usuario.update({ nome, email, descricao });
+      console.log(retorno);
       if ('errorCode' in retorno) {
         if (retorno.errorCode === '400-already-email') {
           setEmailError(true);
@@ -59,7 +60,7 @@ export default function UsuarioForm() {
           setServerError(true);
         }
       } else {
-        const novoUsuario = { ...usuario, usuario: {...usuario?.usuario, nome, email, senha}}
+        const novoUsuario = { ...usuario, usuario: {...usuario?.usuario, nome, email, descricao}}
         setUsuario(novoUsuario as UsuarioContext);
         nav(`/perfil/meu-perfil`);
       }
@@ -166,7 +167,7 @@ export default function UsuarioForm() {
                   />
                   <p>
                     Concordo com as{" "}
-                    <Link onClick={() => setPoliticasModal(true)}>
+                    <Link component="button" onClick={() => setPoliticasModal(true)}>
                       Políticas de privacidade
                     </Link>
                   </p>

@@ -8,10 +8,11 @@ class Termo {
     return data;
   }
 
-  async agreeNewTerms(id: number) {
+  async agreeNewTerms(id: number, politica_id: string) {
     const { data } = await api.request.post('admin/policies/user', {
       id_usuario: id,
       data: new Date().toISOString(),
+      id_politica_privacidade: politica_id,
     });
     console.log(data);
     return data;

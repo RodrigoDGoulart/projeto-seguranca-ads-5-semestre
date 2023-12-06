@@ -11,7 +11,7 @@ interface UsuarioContext extends Usuario {
 
 interface UsuarioLog {
   id_usuario: string;
-  nome_usuario: string;
+  email_usuario: string;
   data: string;
   id_politica_privacidade: string;
 }
