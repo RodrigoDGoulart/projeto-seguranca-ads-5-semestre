@@ -122,6 +122,14 @@ class UsuarioController {
           usuario.descricao
         )
         await log.save();
+
+        if (email){
+          const conexaoMongoService = ConexaoMongo;
+          await conexaoMongoService.conectar();
+          const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
+          await termosCollection.updateMany({ id_usuario : usuario.id }, { email_usuario : email })
+          
+        }
         return res.json(r);
       }
     } catch (e) {
@@ -148,6 +156,11 @@ class UsuarioController {
           });
           const log = new LogUsuarioExcluido(Number(id));
           await log.save();
+          const conexaoMongoService = ConexaoMongo;
+          await conexaoMongoService.conectar();
+          const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
+          await termosCollection.deleteMany({id_usuario : usuario.id})
+
         return res.json(r);
       }
     } catch (e) {
