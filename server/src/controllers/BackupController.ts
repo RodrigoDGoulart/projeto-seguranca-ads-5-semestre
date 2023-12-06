@@ -102,7 +102,7 @@ class BackupController {
       const usuariosEditados = await usuariosEditados_collection.find().toArray();
       
       if (usuariosCriados.length){
-        
+
         // editar usuarios no banco
         await AppDataSource.manager.save(Usuario, usuariosEditados.map(user => {
           const usuario = new Usuario();
@@ -128,13 +128,12 @@ class BackupController {
           .where("id IN (:...ids)", { ids: usuariosExcluidos.map(item => item.id_usuario) })
           .execute();
       }
-    } catch (e) {
-      return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
-    } finally {
       conexao_mongodb.desconectar();
       console.log("Restore do Banco de Dados feito com Sucesso!")
       return res.sendStatus(200);
-    }
+    } catch (e) {
+      return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
+    } 
   }
 
   public async getLastBackup(req: Request, res: Response) {
