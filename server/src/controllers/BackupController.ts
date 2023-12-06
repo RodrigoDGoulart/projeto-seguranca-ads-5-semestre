@@ -82,7 +82,6 @@ class BackupController {
       const usuariosCriados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_criado');
       const usuariosCriados = await usuariosCriados_collection.find().toArray();
       if (usuariosCriados.length){
-        console.log(usuariosCriados);
         // criar usuarios no banco
         await AppDataSource.manager.save(Usuario, usuariosCriados.map(user => {
           const usuario = new Usuario();
@@ -110,7 +109,7 @@ class BackupController {
           usuario.descricao = user.descricao;
           usuario.nome = user.nome;
           usuario.email = user.email;
-          usuario.id_politica_privacidade = user.id_politica_privacidade
+
           return usuario;
         }));
 
