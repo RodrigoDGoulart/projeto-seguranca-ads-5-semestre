@@ -28,7 +28,7 @@ class LogPoliticaPrivacidadeController {
             const conexaoMongoService = ConexaoMongo;
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
-            const todosDocumentos = await politicaPrivacidadeCollection.find({}).sort({ data: -1 }).limit(1).toArray();
+            const todosDocumentos = await politicaPrivacidadeCollection.find({}).sort({ data: -1 }).toArray();
             return res.json(todosDocumentos)
             
         } catch (error){
