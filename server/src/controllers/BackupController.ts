@@ -82,7 +82,7 @@ class BackupController {
       const usuariosCriados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_criado');
       const usuariosCriados = await usuariosCriados_collection.find().toArray();
       if (usuariosCriados.length){
-
+        console.log(usuariosCriados);
         // criar usuarios no banco
         await AppDataSource.manager.save(Usuario, usuariosCriados.map(user => {
           const usuario = new Usuario();
@@ -91,7 +91,7 @@ class BackupController {
           usuario.email = user.email;
           usuario.senha = user.senha;
           usuario.dataCriacao = user.dataCriacao;
-  
+          usuario.id_politica_privacidade = user.id_politica_privacidade
           return usuario;
         }));
 
@@ -101,7 +101,7 @@ class BackupController {
       const usuariosEditados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_editado');
       const usuariosEditados = await usuariosEditados_collection.find().toArray();
       
-      if (usuariosCriados.length){
+      if (usuariosEditados.length){
 
         // editar usuarios no banco
         await AppDataSource.manager.save(Usuario, usuariosEditados.map(user => {
@@ -110,7 +110,7 @@ class BackupController {
           usuario.descricao = user.descricao;
           usuario.nome = user.nome;
           usuario.email = user.email;
-  
+          usuario.id_politica_privacidade = user.id_politica_privacidade
           return usuario;
         }));
 
@@ -132,6 +132,7 @@ class BackupController {
       console.log("Restore do Banco de Dados feito com Sucesso!")
       return res.sendStatus(200);
     } catch (e) {
+      // console.log(e);
       return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
     } 
   }
