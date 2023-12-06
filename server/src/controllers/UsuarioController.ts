@@ -83,18 +83,18 @@ class UsuarioController {
 
     const { nome, email, descricao } = req.body;
 
-    if (email) {
-      const emailVerify = await AppDataSource.manager.findBy(Usuario, { email });
-      if (emailVerify.length) {
-        return res.status(400).json({ error: 'E-mail já cadastrado.', errorCode: '400-already-email' });
-      }
-    }
-
     try {
       const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: Number(id) })
 
       if (!usuario) {
         return res.json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'})
+      }
+
+      if (email && email !== usuario.email) {
+        const emailVerify = await AppDataSource.manager.findBy(Usuario, { email });
+        if (emailVerify.length) {
+          return res.status(400).json({ error: 'E-mail já cadastrado.', errorCode: '400-already-email' });
+        }
       }
       
       if (nome) {
@@ -128,7 +128,7 @@ class UsuarioController {
           await conexaoMongoService.conectar();
           const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
           await termosCollection.updateMany({ id_usuario : usuario.id }, { email_usuario : email })
-          
+
         }
         return res.json(r);
       }
