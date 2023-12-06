@@ -54,7 +54,7 @@ class UsuarioController {
       );
       await log.save();
 
-      const logUsuarioPoliticas = new LogUsuarioPoliticas(usuario.id, new Date(), usuario.id_politica_privacidade);
+      const logUsuarioPoliticas = new LogUsuarioPoliticas(usuario.id, new Date(), usuario.id_politica_privacidade, usuario.email);
       // Salve o log do usuário de políticas usando o último _id do log de política de privacidade
       await logUsuarioPoliticas.salvarLogUsuarioPoliticas();
       

@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import ConexaoMongo from "./ConexaoMongo";
 
 class LogUsuarioPoliticas {
-    constructor(public id_usuario: number, public data: Date, public id_politica_privacidade: string, public id?: ObjectId) {}
+    constructor(public id_usuario: number, public data: Date, public id_politica_privacidade: string, public email_usuario:string, public id?: ObjectId) {}
 
     async salvarLogUsuarioPoliticas(): Promise<void> {
         const conexaoMongoService = ConexaoMongo;
@@ -17,7 +17,7 @@ class LogUsuarioPoliticas {
             const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
 
             // Criar novo log de usuario com a referência ao _id do documento em log_politica_privacidade
-            await termosCollection.insertOne({ id_usuario: this.id_usuario, data: this.data, id_politica_privacidade: idPoliticaPrivacidade });
+            await termosCollection.insertOne({ id_usuario: this.id_usuario, data: this.data, id_politica_privacidade: idPoliticaPrivacidade, email_usuario:this.email_usuario });
 
             console.log("Inseriu log_usuario_politicas");
         } finally {
@@ -31,7 +31,6 @@ class LogUsuarioPoliticas {
             await conexaoMongoService.conectar();
             const politicaPrivacidadeCollection = conexaoMongoService.getBancoDados().collection("log_politica_privacidade");
             const ultimoDocumento = await politicaPrivacidadeCollection.findOne({}, { sort: { data: -1 } });
-
             return ultimoDocumento ? ultimoDocumento._id.toString() : null;
         } catch (error){
             console.error(error)

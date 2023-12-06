@@ -18,7 +18,7 @@ class LogUsuarioPoliticasController {
             usuario.id_politica_privacidade = id_politica_privacidade
             
             // Crie uma instância de LogUsuarioPoliticas com os dados recebidos
-            const logUsuarioPoliticas = new LogUsuarioPoliticas(id_usuario, new Date(data), id_politica_privacidade);
+            const logUsuarioPoliticas = new LogUsuarioPoliticas(id_usuario, new Date(data), id_politica_privacidade, usuario.email);
 
             // Salve o log do usuário de políticas usando o último _id do log de política de privacidade
             await logUsuarioPoliticas.salvarLogUsuarioPoliticas();
