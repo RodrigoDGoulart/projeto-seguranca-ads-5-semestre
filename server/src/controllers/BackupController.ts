@@ -81,33 +81,40 @@ class BackupController {
       // leitura log usuarios criados
       const usuariosCriados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_criado');
       const usuariosCriados = await usuariosCriados_collection.find().toArray();
+      if (usuariosCriados.length){
 
-      // criar usuarios no banco
-      await AppDataSource.manager.save(Usuario, usuariosCriados.map(user => {
-        const usuario = new Usuario();
-        usuario.descricao = user.descricao;
-        usuario.nome = user.nome;
-        usuario.email = user.email;
-        usuario.senha = user.senha;
-        usuario.dataCriacao = user.dataCriacao;
+        // criar usuarios no banco
+        await AppDataSource.manager.save(Usuario, usuariosCriados.map(user => {
+          const usuario = new Usuario();
+          usuario.descricao = user.descricao;
+          usuario.nome = user.nome;
+          usuario.email = user.email;
+          usuario.senha = user.senha;
+          usuario.dataCriacao = user.dataCriacao;
+  
+          return usuario;
+        }));
 
-        return usuario;
-      }));
+      }
 
       // leitura log usuarios editados
       const usuariosEditados_collection = conexao_mongodb.getBancoDados().collection('log_usuario_editado');
       const usuariosEditados = await usuariosEditados_collection.find().toArray();
+      
+      if (usuariosCriados.length){
+        
+        // editar usuarios no banco
+        await AppDataSource.manager.save(Usuario, usuariosEditados.map(user => {
+          const usuario = new Usuario();
+          usuario.id = user.id;
+          usuario.descricao = user.descricao;
+          usuario.nome = user.nome;
+          usuario.email = user.email;
+  
+          return usuario;
+        }));
 
-      // editar usuarios no banco
-      await AppDataSource.manager.save(Usuario, usuariosEditados.map(user => {
-        const usuario = new Usuario();
-        usuario.id = user.id;
-        usuario.descricao = user.descricao;
-        usuario.nome = user.nome;
-        usuario.email = user.email;
-
-        return usuario;
-      }));
+      }
 
       // leitura log usuarios excluídos
       const usuariosExcluidos_collection = conexao_mongodb.getBancoDados().collection('log_usuario_excluido');
