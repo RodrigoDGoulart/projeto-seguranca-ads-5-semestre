@@ -123,13 +123,13 @@ class UsuarioController {
         )
         await log.save();
 
-        if (email){
-          const conexaoMongoService = ConexaoMongo;
-          await conexaoMongoService.conectar();
-          const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
-          await termosCollection.updateMany({ id_usuario : usuario.id }, { email_usuario : email })
-          conexaoMongoService.desconectar()
-        }
+        // if (email){
+        //   const conexaoMongoService = ConexaoMongo;
+        //   await conexaoMongoService.conectar();
+        //   const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
+        //   await termosCollection.updateMany({ id_usuario : usuario.id }, { email_usuario : email })
+        //   conexaoMongoService.desconectar()
+        // }
         return res.json(r);
       }
     } catch (e) {
