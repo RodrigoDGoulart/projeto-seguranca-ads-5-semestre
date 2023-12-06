@@ -125,6 +125,7 @@ class BackupController {
       return res.status(500).json({ error: "Erro no servidor", errorCode: "500-server-error", details: { ...e } });
     } finally {
       conexao_mongodb.desconectar();
+      console.log("Restore do Banco de Dados feito com Sucesso!")
       return res.sendStatus(200);
     }
   }
