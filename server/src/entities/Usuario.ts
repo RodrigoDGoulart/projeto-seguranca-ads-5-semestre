@@ -23,4 +23,7 @@ export class Usuario {
 
     @Column({nullable: false})
     id_politica_privacidade: string;
+
+    @Column({nullable:true})
+    politicas_opcionais_aceitas: string;
 }

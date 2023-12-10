@@ -9,16 +9,21 @@ import { Usuario } from '../entities/Usuario';
 class LogUsuarioPoliticasController {
     public async new(req: Request, res: Response) {
         try {
-            const { id_usuario, data, id_politica_privacidade } = req.body;
+            const { id_usuario, data, id_politica_privacidade, politicas_opcionais_aceitas } = req.body;
+
+            if (!id_usuario || !id_politica_privacidade || !politicas_opcionais_aceitas) {
+                return res.status(400).json({ error: "Campos incompletos ou não informados.", errorCode: "400-undefined-fields" });
+              }
 
             const usuario: any = await AppDataSource.manager.findOneBy(Usuario, { id: id_usuario })
             if (!usuario){
                 return res.json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'})
             }
             usuario.id_politica_privacidade = id_politica_privacidade
-            
+            usuario.politicas_opcionais_aceitas = JSON.stringify({index:politicas_opcionais_aceitas})
+
             // Crie uma instância de LogUsuarioPoliticas com os dados recebidos
-            const logUsuarioPoliticas = new LogUsuarioPoliticas(id_usuario, new Date(data), id_politica_privacidade, usuario.email);
+            const logUsuarioPoliticas = new LogUsuarioPoliticas({id_usuario, data:new Date(data), id_politica_privacidade, email_usuario:usuario.email, politicas_opcionais_aceitas});
 
             // Salve o log do usuário de políticas usando o último _id do log de política de privacidade
             await logUsuarioPoliticas.salvarLogUsuarioPoliticas();

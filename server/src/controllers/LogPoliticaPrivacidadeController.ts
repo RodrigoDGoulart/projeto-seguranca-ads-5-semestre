@@ -8,10 +8,10 @@ import { ObjectId } from "mongodb";
 class LogPoliticaPrivacidadeController {
     public async new(req: Request, res: Response) {
         try {
-            const { titulo, data, politica_privacidade } = req.body;
+            const { titulo, data, politicas } = req.body;
 
             // Crie uma instância de LogPoliticaPrivacidade com os dados recebidos
-            const logPoliticaPrivacidade = new LogPoliticaPrivacidade(titulo, new Date(data), politica_privacidade);
+            const logPoliticaPrivacidade = new LogPoliticaPrivacidade({titulo, data:new Date(data), politicas});
 
             // Salve os logs de política de privacidade e obtenha o _id
             const idPoliticaPrivacidade = await logPoliticaPrivacidade.salvarLogPoliticaPrivacidade();

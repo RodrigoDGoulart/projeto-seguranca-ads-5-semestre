@@ -12,7 +12,7 @@ import LogUsuarioPoliticas from "../models/LogUsuarioPoliticas";
 
 class UsuarioController {
   public async new(req: Request, res: Response) {
-    const { nome, email, senha, descricao } = req.body;
+    const { nome, email, senha, descricao, politicas_opcionais_aceitas } = req.body;
 
     if (!nome || !email || !senha) {
       return res.status(400).json({ error: "Campos incompletos ou não informados.", errorCode: "400-undefined-fields" });
@@ -29,6 +29,7 @@ class UsuarioController {
     obj.senha = await encryptPassword(senha);
     obj.descricao = descricao || '';
     obj.id_politica_privacidade = id_politica
+    obj.politicas_opcionais_aceitas = JSON.stringify({index:politicas_opcionais_aceitas})
 
     const emailVerify = await AppDataSource.manager.findBy(Usuario, { email });
     if (emailVerify.length) {
@@ -50,11 +51,12 @@ class UsuarioController {
         obj.senha,
         obj.descricao,
         obj.dataCriacao,
-        obj.id_politica_privacidade
+        obj.id_politica_privacidade,
+        politicas_opcionais_aceitas as number[]
       );
       await log.save();
 
-      const logUsuarioPoliticas = new LogUsuarioPoliticas(usuario.id, new Date(), usuario.id_politica_privacidade, usuario.email);
+      const logUsuarioPoliticas = new LogUsuarioPoliticas({id_usuario:usuario.id, data:new Date(), id_politica_privacidade:usuario.id_politica_privacidade, email_usuario:usuario.email, politicas_opcionais_aceitas});
       // Salve o log do usuário de políticas usando o último _id do log de política de privacidade
       await logUsuarioPoliticas.salvarLogUsuarioPoliticas();
       
@@ -67,7 +69,8 @@ class UsuarioController {
           email: usuario.email,
           descricao: usuario.descricao,
           dataCriacao: usuario.dataCriacao,
-          id_politica_privacidade: usuario.id_politica_privacidade
+          id_politica_privacidade: usuario.id_politica_privacidade,
+          politicas_opcionais_aceitas: usuario.politicas_opcionais_aceitas
         },
         token,
       });
@@ -122,14 +125,7 @@ class UsuarioController {
           usuario.descricao
         )
         await log.save();
-
-        // if (email){
-        //   const conexaoMongoService = ConexaoMongo;
-        //   await conexaoMongoService.conectar();
-        //   const termosCollection = conexaoMongoService.getBancoDados().collection("log_usuario_politica_privacidade");
-        //   await termosCollection.updateMany({ id_usuario : usuario.id }, { email_usuario : email })
-        //   conexaoMongoService.desconectar()
-        // }
+       
         return res.json(r);
       }
     } catch (e) {
@@ -190,8 +186,8 @@ class UsuarioController {
     if (!usuario) {
       return res.status(404).json({ error: "Usuário não encontrado", errorCode: '404-user-not-found'});
     }
-
-    return res.json(usuario);
+    // console.log(JSON.parse(usuario.politicas_opcionais_aceitas))
+    return res.json({...usuario, politicas_opcionais_aceitas:JSON.parse(usuario.politicas_opcionais_aceitas).index});
   }
 
   public async login(req: Request, res: Response) {
@@ -220,7 +216,8 @@ class UsuarioController {
           email: usuario.email,
           descricao: usuario.descricao,
           dataCriacao: usuario.dataCriacao,
-          id_politica_privacidade: usuario.id_politica_privacidade
+          id_politica_privacidade: usuario.id_politica_privacidade,
+          politicas_opcionais_aceitas: JSON.parse(usuario.politicas_opcionais_aceitas).index
         },
         token,
       });
