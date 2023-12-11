@@ -1,0 +1,29 @@
+.backups-container {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.backups-title {
+  text-align: center;
+}
+
+.backups-btn {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.backups-loading {
+  text-align: center;
+}
+
+.backups-info {
+  text-align: center;
+  margin: 24px 18px;
+}
+
+.backups-warning {
+  display: flex;
+  justify-content: center;
+}

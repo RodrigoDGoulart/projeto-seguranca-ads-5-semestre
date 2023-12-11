@@ -1,0 +1,23 @@
+.perfil-container {
+    width: 100%;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.perfil-nome {
+    margin: 0;
+}
+
+.perfil-desc {
+    max-width: 80%;
+    text-align: center;
+}
+
+.perfil-btn-container {
+    margin-top: 12px;
+    display: flex;
+    gap: 12px;
+}

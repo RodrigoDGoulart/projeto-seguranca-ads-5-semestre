@@ -1,0 +1,33 @@
+.usuarios-title {
+    text-align: center;
+}
+
+.usuarios-container {
+    margin: 18px auto;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.usuarios-pesquisa {
+    display: flex;
+    width: 100%;
+    gap: 16px;
+}
+
+.usuarios-pesquisa-input {
+    flex: 1;
+}
+
+.usuarios-carregando {
+    text-align: center;
+}
+
+.usuarios-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 200px;
+}

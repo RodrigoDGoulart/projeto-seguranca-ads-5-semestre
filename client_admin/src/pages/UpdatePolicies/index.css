@@ -1,0 +1,25 @@
+.updatepolicies-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.updatepolicies-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 60%;
+  gap: 24px;
+}
+
+.policies-content-field, .policies-title-field {
+  width: 100%;
+}
+
+.updatepolitices-alert {
+  position: absolute;
+  top: 12px;
+  
+}
