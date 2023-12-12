@@ -81,7 +81,7 @@ export default function Perfil() {
             Atualizado em
             {` ${new Date(termos?.data as string).toLocaleDateString("pt-BR")}`}
           </Typography>
-          <div className="novousuario-modal-texto">{termos?.politica_privacidade}</div>
+          <div className="novousuario-modal-texto">{termos?.politicas.obrigatorio}</div>
         </Box>
       </Modal>
       <DeleteAccountModal

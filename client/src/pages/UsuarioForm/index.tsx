@@ -41,6 +41,9 @@ export default function UsuarioForm() {
   const [politicasCheck, setPoliticasCheck] = useState(false);
 
   const [termos, setTermos] = useState<Politica>();
+  const [opcionaisSelecionados, setOpcionaisSelecionados] = useState<number[]>([])
+  const [textoSelecionado, setTextoSelecionado] = useState("")
+  const [tituloSelecionado, setTituloSelecionado] = useState("")
 
   const [politicasModal, setPoliticasModal] = useState(false);
 
@@ -60,12 +63,12 @@ export default function UsuarioForm() {
           setServerError(true);
         }
       } else {
-        const novoUsuario = { ...usuario, usuario: {...usuario?.usuario, nome, email, descricao}}
+        const novoUsuario = { ...usuario, usuario: { ...usuario?.usuario, nome, email, descricao } }
         setUsuario(novoUsuario as UsuarioContext);
         nav(`/perfil/meu-perfil`);
       }
     } else {
-      const resp = await Usuario.criar({ nome, email, senha, descricao });
+      const resp = await Usuario.criar({ nome, email, senha, descricao, politicas_opcionais_aceitas: opcionaisSelecionados });
       if ("usuario" in resp) {
         setUsuario(resp);
         api.setToken(resp.token);
@@ -98,67 +101,68 @@ export default function UsuarioForm() {
   return (
     <>
       <div>
-          <>
-            <h1 className="novousuario-title">
-              {!isUpdateForm ? "Cadastro" : "Editar dados"}
-            </h1>
-            {serverError && (
-              <p className="novousuario-error">
-                Erro interno do servidor, tente novamente mais tarde
-              </p>
+        <>
+          <h1 className="novousuario-title">
+            {!isUpdateForm ? "Cadastro" : "Editar dados"}
+          </h1>
+          {serverError && (
+            <p className="novousuario-error">
+              Erro interno do servidor, tente novamente mais tarde
+            </p>
+          )}
+          <form
+            className="novousuario-form"
+            onSubmit={(e: any) => {
+              e.preventDefault();
+              submit();
+            }}
+          >
+            <TextField
+              className="novousuario-input"
+              id="nome"
+              label="Nome"
+              variant="outlined"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+            <TextField
+              className="novousuario-input"
+              id="email"
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              required
+              error={emailError}
+              helperText={emailError ? "Este email já existe" : ""}
+            />
+            {!isUpdateForm && (
+              <TextField
+                className="novousuario-input"
+                id="senha"
+                label="Senha"
+                variant="outlined"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                type="password"
+                required
+              />
             )}
-            <form
-              className="novousuario-form"
-              onSubmit={(e: any) => {
-                e.preventDefault();
-                submit();
-              }}
-            >
-              <TextField
-                className="novousuario-input"
-                id="nome"
-                label="Nome"
-                variant="outlined"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                required
-              />
-              <TextField
-                className="novousuario-input"
-                id="email"
-                label="Email"
-                variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                required
-                error={emailError}
-                helperText={emailError ? "Este email já existe" : ""}
-              />
-              {!isUpdateForm && (
-                <TextField
-                  className="novousuario-input"
-                  id="senha"
-                  label="Senha"
-                  variant="outlined"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                  type="password"
-                  required
-                />
-              )}
-              <TextField
-                className="novousuario-input"
-                id="descricao"
-                label="Descrição"
-                variant="outlined"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                type="text"
-                multiline={true}
-                rows={25}
-              />
-              {!isUpdateForm && (
+            <TextField
+              className="novousuario-input"
+              id="descricao"
+              label="Descrição"
+              variant="outlined"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              type="text"
+              multiline={true}
+              rows={25}
+            />
+            {!isUpdateForm && (
+              <>
                 <div className="novousuario-checkbox">
                   <Checkbox
                     checked={politicasCheck}
@@ -167,21 +171,54 @@ export default function UsuarioForm() {
                   />
                   <p>
                     Concordo com as{" "}
-                    <Link component="button" onClick={() => setPoliticasModal(true)}>
+                    <Link component="button" type="button" onClick={() => {
+                      setTextoSelecionado(termos?.politicas.obrigatorio as string)
+                      setTituloSelecionado("Politicas de Privacidade")
+                      setPoliticasModal(true)
+                    }}>
                       Políticas de privacidade
                     </Link>
                   </p>
                 </div>
-              )}
-              <Button
-                variant="contained"
-                type="submit"
-                disabled={!politicasCheck}
-              >
-                {isUpdateForm ? "Editar dados" : "Criar usuário"}
-              </Button>
-            </form>
-          </>
+                {termos?.politicas.opcionais.map(item => (
+                  <div className="novousuario-checkbox">
+                    <Checkbox
+                      checked={Boolean(opcionaisSelecionados.find(index => item.index === index))}
+                      onChange={() => {
+                        if(opcionaisSelecionados.find(index => item.index === index)){
+                          const opcionaisSelecionadosTemp = [...opcionaisSelecionados].filter(index => item.index !== index)
+                          setOpcionaisSelecionados(opcionaisSelecionadosTemp)
+                        }else{
+                          const opcionaisSelecionadosTemp = [...opcionaisSelecionados]
+                          opcionaisSelecionadosTemp.push(item.index)
+                          setOpcionaisSelecionados(opcionaisSelecionadosTemp)
+                        }
+                      }}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                    <p>
+                      Concordo com {" "}
+                      <Link component="button" type="button" onClick={() => {
+                        setTextoSelecionado(item.conteudo as string)
+                        setTituloSelecionado(item.titulo)
+                        setPoliticasModal(true)
+                      }}>
+                        {item.titulo}
+                      </Link>
+                    </p>
+                  </div>
+                ))}
+              </>
+            )}
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={!politicasCheck}
+            >
+              {isUpdateForm ? "Editar dados" : "Criar usuário"}
+            </Button>
+          </form>
+        </>
       </div>
       <Modal
         open={politicasModal}
@@ -196,13 +233,13 @@ export default function UsuarioForm() {
             component="h1"
             align="center"
           >
-            Políticas de Privacidade
+            {tituloSelecionado}
           </Typography>
           <Typography id="modal-modal-title" component="h1" align="center">
             Atualizado em
             {` ${new Date(termos?.data as string).toLocaleDateString("pt-BR")}`}
           </Typography>
-          <div className="novousuario-modal-texto">{termos?.politica_privacidade}</div>
+          <div className="novousuario-modal-texto">{textoSelecionado}</div>
         </Box>
       </Modal>
     </>

@@ -7,6 +7,7 @@ interface NewUsuarioForm {
   email: string;
   senha: string;
   descricao: string;
+  politicas_opcionais_aceitas: number[]
 }
 interface UsuarioUpdateForm {
   nome: string;

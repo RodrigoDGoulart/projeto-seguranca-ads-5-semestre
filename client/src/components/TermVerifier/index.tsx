@@ -82,7 +82,7 @@ export default function TermVerifier({ page }: Props) {
               Atualizado em{` ${new Date(termos?.data as string).toLocaleDateString('pt-BR')}`}
             </Typography>
             <div className="novousuario-modal-texto">
-              {termos?.politica_privacidade}
+              {termos?.politicas.obrigatorio}
             </div>
             <div className="termverifier-btns">
               <Button 

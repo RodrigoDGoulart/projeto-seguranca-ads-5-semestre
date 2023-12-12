@@ -5,10 +5,19 @@ interface Termo {
 }
 
 interface Politica {
-  _id: string;
-  titulo: string;
-  politica_privacidade: string;
-  data: string;
+  _id: string,
+  titulo: string,
+  data: string,
+  politicas: {
+    obrigatorio: string,
+    opcionais: [
+      {
+        index: number,
+        titulo: string,
+        conteudo: string
+      }
+    ]
+  }
 }
 
 export type {
