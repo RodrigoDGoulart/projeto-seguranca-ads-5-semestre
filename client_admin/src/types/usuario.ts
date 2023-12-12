@@ -14,6 +14,7 @@ interface UsuarioLog {
   email_usuario: string;
   data: string;
   id_politica_privacidade: string;
+  politicas_opcionais_aceitas: number[]
 }
 
 export type {

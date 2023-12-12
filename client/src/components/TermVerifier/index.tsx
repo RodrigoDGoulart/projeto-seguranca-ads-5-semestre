@@ -45,13 +45,14 @@ export default function TermVerifier({ page }: Props) {
     const getTerms = async () => {
       const lastTerms = await Termos.getLastTerm();
       console.log(lastTerms, usuario?.usuario)
-      if (usuario && usuario.usuario.id_politica_privacidade && usuario.usuario.id_politica_privacidade !== lastTerms._id) {
+      if (usuario && usuario.usuario.id_politica_privacidade && usuario.usuario.id_politica_privacidade !== lastTerms._id && location.pathname !== '/detalhe-politicas') {
         setNewTermsModal(true);
         setTermos(lastTerms);
       }
     }
 
     getTerms();
+    console.log(location)
   }, [location, usuario]);
   return (
     <>

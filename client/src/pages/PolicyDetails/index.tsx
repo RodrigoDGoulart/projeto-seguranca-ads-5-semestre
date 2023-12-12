@@ -19,11 +19,13 @@ export default function PolicyDetails() {
         const novoUsuario = { ...usuario, usuario: { ...usuario?.usuario, id_politica_privacidade: termos?._id, politicas_opcionais_aceitas:opcionaisSelecionados } } as UsuarioContext;
         setUsuario(novoUsuario);
         sessionStorage.setItem('usuario', JSON.stringify(novoUsuario));
+        setUpdatePreferences(false)
     }
 
     const getInfo = async () => {
         await Termos.getLastTerm().then((res) => setTermos(res));
-        setOpcionaisSelecionados(usuario?.usuario.politicas_opcionais_aceitas as number[])
+        const termosUsuario = usuario?.usuario.politicas_opcionais_aceitas ? usuario?.usuario.politicas_opcionais_aceitas as number[] : []
+        setOpcionaisSelecionados(termosUsuario)
     }
 
     useEffect(() => {
