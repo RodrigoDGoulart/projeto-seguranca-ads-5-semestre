@@ -91,6 +91,24 @@ export default function Policies() {
                   {policy.politicas.obrigatorio}
                 </div>
               </div>
+              <h2>Termos Opcionais</h2>
+              <ul className='policies-info-optional-list'>
+                {
+                  policy.politicas.opcionais.map(item => (
+                    <li key={item.index} className='policies-optional-list-item'>
+                      <div className='policies-optional-list-item-content'>
+                        id: {item.index}
+                      </div>
+                      <div className='policies-optional-list-item-content'>
+                        titulo: {item.titulo}
+                      </div>
+                      <div className='policies-optional-list-item-content'>
+                        detalhe: {item.conteudo}
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
             </div>
           ) : (
             <div className='policies-info-noselected'>

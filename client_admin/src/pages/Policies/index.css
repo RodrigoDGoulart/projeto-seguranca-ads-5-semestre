@@ -46,5 +46,15 @@
   text-align: justify;
   overflow: scroll;
   scroll-behavior: auto;
-  max-height: 500px;
+  max-height: 300px;
+}
+
+.policies-info-optional-list{
+  padding: 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 200px;
+  scroll-behavior: auto;
+  overflow: scroll;
 }
