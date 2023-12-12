@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 class Api {
-  private url = 'https://teste-api-jjpp.onrender.com/admin/';
+  private url = 'http://localhost:8080/admin/';
 
   public request: AxiosInstance = axios.create({
     baseURL: this.url,

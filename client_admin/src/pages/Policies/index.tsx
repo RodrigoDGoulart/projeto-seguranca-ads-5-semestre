@@ -88,7 +88,7 @@ export default function Policies() {
               <div>
                 <h4>Conteúdo:</h4>
                 <div className='policies-info-content'>
-                  {policy.politica_privacidade}
+                  {policy.politicas.obrigatorio}
                 </div>
               </div>
             </div>

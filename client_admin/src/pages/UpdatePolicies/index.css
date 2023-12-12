@@ -23,3 +23,35 @@
   top: 12px;
   
 }
+
+.policies-optional-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.policies-optional-detail-container {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.policies-optional-detail-field {
+  flex: 1;
+}
+
+.policies-optional-list{
+  width: 100%;
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.policies-optional-list-item{
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid black;
+  border-radius: 12px;
+}

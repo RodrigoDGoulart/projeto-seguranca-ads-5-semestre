@@ -4,7 +4,14 @@ import api from "./api";
 
 interface PolicyForm {
   titulo: string;
-  politica_privacidade: string;
+  politicas: {
+    obrigatorio: string,
+    opcionais: {
+      index: number,
+      titulo: string,
+      conteudo: string
+    }[]
+  }
 }
 
 class Politica {
@@ -27,6 +34,7 @@ class Politica {
   async updatePolitica (info: PolicyForm) {
     const dia = new Date().toISOString();
     const { data } = await api.request.post('/policies', {...info, data: dia});
+    console.log({...info, data: dia})
     return data;
   }
 
