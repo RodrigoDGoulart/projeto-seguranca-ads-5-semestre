@@ -15,7 +15,7 @@ export default function PolicyDetails() {
     const { usuario, setUsuario } = useContexto();
 
     const atualizarPreferencias = async () => {
-        await Termos.agreeNewTerms(usuario?.usuario.id as number, termos?._id as string, opcionaisSelecionados);
+        await Termos.agreeNewTerms(usuario?.usuario.id as number, termos?._id as string, opcionaisSelecionados.filter(elemento => termos?.politicas.opcionais.find(item => item.index === elemento)));
         const novoUsuario = { ...usuario, usuario: { ...usuario?.usuario, id_politica_privacidade: termos?._id, politicas_opcionais_aceitas:opcionaisSelecionados } } as UsuarioContext;
         setUsuario(novoUsuario);
         sessionStorage.setItem('usuario', JSON.stringify(novoUsuario));
