@@ -13,6 +13,7 @@ interface UsuarioItem {
 
 interface UsuarioInfoContext extends Usuario {
   id_politica_privacidade: string;
+  politicas_opcionais_aceitas: number[]
 }
 
 interface UsuarioContext {

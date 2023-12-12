@@ -13,6 +13,7 @@ function ContextoProvider({ children }: any) {
   const [usuario, setUsuario] = useState<UsuarioContext>();
 
   useEffect(() => {
+    console.log('POWEKFPOWKEPOFKWEPOFKWEPOFKWEPOFKPOWEFKPOWEFKPWEKFPOWEKFPOWEKFPWEKPFOWEK')
     if (!usuario) {
       const usuarioJSON = sessionStorage.getItem('usuario');
       if (usuarioJSON) {

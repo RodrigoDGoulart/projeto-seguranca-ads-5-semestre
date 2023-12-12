@@ -109,7 +109,7 @@ export default function Perfil() {
                   </Button>
                 </div>
                 <div className="perfil-btn-container">
-                <Link component="button" onClick={() => setPoliticasModal(true)}>Políticas de Privacidade</Link>
+                <Link component="button" onClick={() => nav('/detalhe-politicas')}>Políticas de Privacidade</Link>
                 </div>
               </>
             )}

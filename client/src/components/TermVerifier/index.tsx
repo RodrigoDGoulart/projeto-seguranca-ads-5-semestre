@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Button, Modal, Typography } from "@mui/material";
 
 import { useContexto } from "../../hooks/useContexto";
@@ -30,17 +30,15 @@ const styleModal = {
 export default function TermVerifier({ page }: Props) {
   const location = useLocation();
   const { usuario, setUsuario } = useContexto();
+  const nav = useNavigate();
 
   const [newTermsModal, setNewTermsModal] = useState(false);
   const [termos, setTermos] = useState<Politica>();
   const [deleteModal, setDeleteModal] = useState(false);
 
   const agree = async () => {
-    await Termos.agreeNewTerms(usuario?.usuario.id as number, termos?._id as string);
-    const novoUsuario = {...usuario, usuario: {...usuario?.usuario, id_politica_privacidade: termos?._id}} as UsuarioContext;
-    setUsuario(novoUsuario);
-    setNewTermsModal(false);
-    sessionStorage.setItem('usuario', JSON.stringify(novoUsuario));
+    nav('/detalhe-politicas')
+    setNewTermsModal(false)
   }
 
   useEffect(() => {
@@ -89,14 +87,7 @@ export default function TermVerifier({ page }: Props) {
                 variant="contained" 
                 onClick={() => agree()}
               >
-                Concordo com as novas políticas
-              </Button>
-              <Button 
-                variant="outlined" 
-                color="error" 
-                onClick={() => setDeleteModal(true)}
-              >
-                Não concordo com as novas políticas, desejo excluir minha conta
+                Atualizar Preferências
               </Button>
             </div>
           </div>

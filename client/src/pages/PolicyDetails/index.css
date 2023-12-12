@@ -1,0 +1,12 @@
+
+.policy-details-container{
+    margin: 12px;
+}
+
+.policy-details-optionals-title{
+    display: flex;
+}
+
+.policy-details-btn{
+    margin-top: 12px;
+}

@@ -5,6 +5,7 @@ import Perfil from "./pages/Perfil";
 import UsuarioForm from "./pages/UsuarioForm";
 import TermVerifier from "./components/TermVerifier";
 import Header from "./components/Header";
+import PolicyDetails from "./pages/PolicyDetails";
 
 export default function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
         <Route path='/cadastro' element={<TermVerifier page={<Header element={<UsuarioForm />} />} />} />
         <Route path='/perfil/:id' element={<TermVerifier page={<Header element={<Perfil />} />} />} />
         <Route path='/editar-dados' element={<TermVerifier page={<Header element={<UsuarioForm />} />} />} />
+        <Route path='/detalhe-politicas' element={<TermVerifier page={<Header element={<PolicyDetails />} />} />} />
       </Routes>
     </BrowserRouter>
   );
